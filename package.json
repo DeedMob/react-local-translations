@@ -1,5 +1,5 @@
 {
-  "name": "react-polyglot",
+  "name": "react-local-translations",
   "version": "0.2.2",
   "description": "Higher order React component for using Polyglot",
   "main": "lib/index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nayaabkhan/react-polyglot.git"
+    "url": "git+https://github.com/DeedMob/react-location-translations.git"
   },
   "keywords": [
     "react",
@@ -25,12 +25,12 @@
     "polyglot",
     "i18n"
   ],
-  "author": "Nayaabkhan Khan <khannayaab@gmail.com> (http://nayaabkhan.me)",
+  "author": "David Furlong",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nayaabkhan/react-polyglot/issues"
+    "url": "https://github.com/DeedMob/react-location-translations/issues"
   },
-  "homepage": "https://github.com/nayaabkhan/react-polyglot#readme",
+  "homepage": "https://github.com/DeedMob/react-location-translations#readme",
   "peerDependencies": {
     "node-polyglot": "^2.0.0",
     "react": "^0.14.0 || ^15.0.0-0"

@@ -1,15 +1,17 @@
-# React Polyglot
-Provides higher order component for using Polyglot with React
+# React Local Translations
+Provides higher order component for using Polyglot with React, locally so that each component has its own translations file.
+
+# Requires unique component names
 
 ## Installation
 
 ```
-npm install --save react-polyglot
+npm install --save react-local-translations
 ```
 
 ## Usage
 
-`react-polyglot` exports consists for one wrapper component called `I18n` and one decorator called
+`react-local-translations` exports consists for one wrapper component called `I18nProvider` and one decorator called
 `translate`. The decorator provides a prop `t` which is instance of `Polyglot`.
 
 You are required to wrap your root component with `I18n` and pass on a `locale` like `en` or `fr`.
@@ -18,19 +20,20 @@ And `messages` object containing the strings.
 ```js
 import React from 'react';
 import { render } from 'react-dom';
-import { I18n } from 'react-polyglot';
+import { I18nProvider } from 'react-local-translations';
 import App from './components/app';
 
 const locale = window.locale || 'en';
-const messages = {
+// Globals
+const globals = {
   "hello_name": "Hello, %{name}.",
   "num_cars": "%{smart_count} car |||| %{smart_count} cars",
 }
 
 render(
-  <I18n locale={locale} messages={messages}>
+  <I18nProvider locale={locale} globals={globals}>
     <App />
-  </I18n>,
+  </I18nProvider>,
   document.getElementById('app')
 );
 ```

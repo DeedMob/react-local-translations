@@ -1,7 +1,7 @@
-import I18n from './i18n';
+import I18nProvider from './i18n';
 import translate from './translate';
 
 export {
-  I18n,
+  I18nProvider,
   translate
 };
