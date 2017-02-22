@@ -5,6 +5,10 @@ const translations = {
   "hello_name": {
     en: "In English, Hello Name",
     de: "Auf Deutsch, Hallo Name"
+  },
+  "some_key": {
+    en: "blah",
+    de: "irgendwas"
   }
 }
 
