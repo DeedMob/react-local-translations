@@ -1,5 +1,5 @@
 # React Local Translations
-Provides higher order component for using Polyglot with React, locally so that each component has its own translations file.
+This library allows you to define translations both globally for the entire app, as well as component local translations. It uses the lightweight Polyglot.js for internationalization and is really tiny (DIY)
 
 ## Installation
 
