@@ -32,17 +32,22 @@ import Greeter from './greeter';
 const locale = ['de', 'en'][Math.floor(Math.random()*2)];
 
 const globals = {
-  "some_global": "Hello, %{name}.",
-  "num_cars": "%{smart_count} car |||| %{smart_count} cars",
+  "some_global": {
+    en: "Hello, %{name}.",
+    de: "Hallo, %{name}"
+  },
+  "num_cars": {
+    en: "%{smart_count} car |||| %{smart_count} cars",
+    de: "%{smart_count} auto |||| %{smart_count} autos"
+  }
 }
 
 render(
-  <I18nProvider locale={locale} globals={globals}>
+  <I18nProvider initialLocale={locale} globals={globals}>
     <Greeter name="Batsy" />
   </I18nProvider>,
   document.getElementById('app')
 );
-
 ```
 
 Then inside `App` or a child component of `App` you can do:
@@ -50,21 +55,27 @@ Then inside `App` or a child component of `App` you can do:
 ```js
 import React from 'react';
 import { translate } from '../lib';
+import LanguageSelect from './languageSelect';
+
+console.log(<languageSelect/>);
 
 const translations = {
   "hello_name": {
     en: "In English, Hello Name",
     de: "Auf Deutsch, Hallo Name"
   },
-  "other": {
-    en: "other",
-    de: "anders"
-  },
+  "some_key": {
+    en: "blah",
+    de: "irgendwas"
+  }
 }
 
 const Greeter = ({ name, t, g }) => {
   return (
-    <h3>{t('hello_name')}<b>{g('some_global', { name })}</b></h3>
+    <div>
+      <h3>{t('hello_name')}<b>{g('some_global', { name })}</b></h3>
+      <LanguageSelect/>
+    </div>
   )
 };
 
@@ -78,10 +89,60 @@ export default translate(translations, true)(Greeter);
 
 ```
 
+Change the language
+
+```js
+
+import React from 'react';
+import {translate} from '../lib';
+
+const translations = {
+  english: {
+    "de": "Englisch",
+    "en": "English"
+  },
+  german: {
+    "de": "Deutch",
+    "en": "German"
+  },
+  selectLanguage: {
+    de: "Bitte Sprache Waehlen",
+    en: "Select a language"
+  }
+}
+
+class LanguageSelect extends React.Component {
+  shouldComponentUpdate(){
+    return false;
+  }
+  render(){
+    const { t, setLocale, getLocale } = this.props;
+    const locale = getLocale();
+    return (
+      <div>
+        <h1>{t("selectLanguage")}</h1>
+        <select value={locale} onChange={(e) => setLocale(e.target.value)}>
+          <option value="en">{t("english")}</option>
+          <option value="de">{t("german")}</option>
+        </select>
+      </div>
+    )
+  }
+}
+
+export default translate(translations, false, true, true)(LanguageSelect)
+
+```
 ## translate HOC
 
-translate(translations: Object, injectGlobals: Boolean)
+*args*
+(translations, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false)
 
-See above for an example of the translations object
+## I18nProvider props
+
+(initialLocale: string, globals: Object)
+
+
+See above for an example of the translations/globals object
 
 ### For reliable results unique react component names in project (as local translations are stored by their namespace)

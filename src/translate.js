@@ -4,7 +4,7 @@ import Polyglot from 'node-polyglot';
 
 // higher order decorator for components that need `t`
 const translate =
-  (translations, useGlobals=false, exposeSetLocale=false, exposeGetLocale = false) =>
+  (translations, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false) =>
   (WrappedComponent) => {
     class LocalTranslationProvider extends React.Component {
       constructor(props, context){
@@ -38,7 +38,7 @@ const translate =
       render(){
         const exposed = Object.assign({}, {
           t: this.state._polyglot.t.bind(this.state._polyglot),
-          g: useGlobals ? this.context.g : undefined,
+          g: exposeGlobal ? this.context.g : undefined,
           setLocale: exposeSetLocale ? this.context.setLocale : undefined,
           getLocale: exposeGetLocale ? this.context.locale : undefined
         })
@@ -48,7 +48,7 @@ const translate =
     }
 
     LocalTranslationProvider.contextTypes = {
-      g: React.PropTypes.func.isRequired, // todo dynamically include this context based useGlobals
+      g: React.PropTypes.func.isRequired, // todo dynamically include this context based exposeGlobal
       locale: React.PropTypes.func.isRequired,
       subscriptions: React.PropTypes.object.isRequired,
       setLocale: React.PropTypes.func.isRequired

@@ -6698,7 +6698,7 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -6720,19 +6720,6 @@
 	  }
 	}
 
-	var addPrefixToKeys = exports.addPrefixToKeys = function addPrefixToKeys(prefix) {
-	  var keys = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	  var transformedMap = {};
-	  var delimiter = '##';
-
-	  Object.keys(keys).forEach(function (key, i) {
-	    transformedMap[prefix + delimiter + key] = keys[key];
-	  });
-
-	  return transformedMap;
-	};
-
 	var compileLanguage = exports.compileLanguage = function compileLanguage(locale, translations) {
 	  var localeTranslation = {};
 	  for (var key in translations) {
@@ -6749,14 +6736,14 @@
 	  }
 
 	  _createClass(Subscribe, [{
-	    key: 'messageSubscribers',
+	    key: "messageSubscribers",
 	    value: function messageSubscribers() {
 	      this.subscriptions.forEach(function (f) {
 	        return f();
 	      });
 	    }
 	  }, {
-	    key: 'subscribe',
+	    key: "subscribe",
 	    value: function subscribe(f) {
 	      this.subscriptions.push(f);
 	    }
@@ -10269,7 +10256,7 @@
 
 	// higher order decorator for components that need `t`
 	var translate = function translate(translations) {
-	  var useGlobals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	  var exposeGlobal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	  var exposeSetLocale = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	  var exposeGetLocale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 	  return function (WrappedComponent) {
@@ -10316,7 +10303,7 @@
 
 	          var exposed = Object.assign({}, {
 	            t: this.state._polyglot.t.bind(this.state._polyglot),
-	            g: useGlobals ? this.context.g : undefined,
+	            g: exposeGlobal ? this.context.g : undefined,
 	            setLocale: exposeSetLocale ? this.context.setLocale : undefined,
 	            getLocale: exposeGetLocale ? this.context.locale : undefined
 	          });
@@ -10331,7 +10318,7 @@
 	    }(_react2.default.Component);
 
 	    LocalTranslationProvider.contextTypes = {
-	      g: _react2.default.PropTypes.func.isRequired, // todo dynamically include this context based useGlobals
+	      g: _react2.default.PropTypes.func.isRequired, // todo dynamically include this context based exposeGlobal
 	      locale: _react2.default.PropTypes.func.isRequired,
 	      subscriptions: _react2.default.PropTypes.object.isRequired,
 	      setLocale: _react2.default.PropTypes.func.isRequired
