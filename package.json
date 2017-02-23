@@ -31,7 +31,7 @@
     "url": "https://github.com/DeedMob/react-location-translations/issues"
   },
   "homepage": "https://github.com/DeedMob/react-location-translations#readme",
-  "peerDependencies": {
+  "dependencies": {
     "node-polyglot": "^2.0.0",
     "react": "^0.14.0 || ^15.0.0-0"
   },
