@@ -17,8 +17,9 @@ http://airbnb.io/polyglot.js/
 
 ## Usage
 
-`react-local-translations` exports consists for one wrapper component called `I18nProvider` and one decorator called
-`translate`. The decorator provides a prop `t` which is instance of `Polyglot`.
+[DEMO](https://deedmob.github.io/react-local-translations/example/index.html)
+
+`react-local-translations` exports consists for one wrapper component called `I18nProvider` and one decorator called `translate`. Depending on the arguments to translate you can expose a function `t` for fetching local translations, `g` for global translations (shared across app), `setLocale` for setting the locale, and `getLocale` for getting the locale.
 
 You are required to wrap your root component with `I18n` and pass on a `locale` like `en` or `fr`.
 And `messages` object containing the strings.
