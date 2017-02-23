@@ -11,6 +11,10 @@ npm install --save react-local-translations
 yarn add react-local-translations
 ```
 
+## Uses Polyglot.js
+
+http://airbnb.io/polyglot.js/
+
 ## Usage
 
 `react-local-translations` exports consists for one wrapper component called `I18nProvider` and one decorator called

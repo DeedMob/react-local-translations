@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Polyglot from 'node-polyglot';
-import { addPrefixToKeys } from './utils';
+import { addPrefixToKeys, Subscribe, compileLanguage } from './utils';
 
 // Provider root component
 export default class I18nProvider extends Component {
@@ -8,26 +8,28 @@ export default class I18nProvider extends Component {
     super(props);
 
     this._polyglot = new Polyglot({
-      locale: props.locale,
-      phrases: addPrefixToKeys("globals", props.globals)
+      locale: props.initialLocale,
+      phrases: compileLanguage(props.initialLocale, props.globals)
     });
+    this._subscriptions = new Subscribe();
+    this._allGlobals = props.globals;
   }
 
   getChildContext() {
     return {
-      t: this._polyglot.t.bind(this._polyglot),
+      g: this._polyglot.t.bind(this._polyglot),
       locale: this._polyglot.locale.bind(this._polyglot),
-      extend: this._polyglot.extend.bind(this._polyglot)
+      subscriptions: this._subscriptions,
+      setLocale: this.setLocale.bind(this)
     };
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.locale !== this.props.locale) {
-      this._polyglot = new Polyglot({
-        locale: newProps.locale,
-        phrases: newProps.globals,
-        polyglot: this._polyglot
-      })
+  setLocale(locale){
+    if(locale !== this._polyglot.locale()){
+      this._polyglot.locale(locale);
+      this._polyglot.clear();
+      this._polyglot.extend(compileLanguage(locale, this._allGlobals));
+      this._subscriptions.messageSubscribers();
     }
   }
 
@@ -38,13 +40,14 @@ export default class I18nProvider extends Component {
 }
 
 I18nProvider.propTypes = {
-  locale: React.PropTypes.string.isRequired,
+  initialLocale: React.PropTypes.string.isRequired,
   globals: React.PropTypes.object.isRequired,
   children: React.PropTypes.element.isRequired,
 };
 
 I18nProvider.childContextTypes = {
-  t: React.PropTypes.func.isRequired,
+  g: React.PropTypes.func.isRequired,
   locale: React.PropTypes.func.isRequired,
-  extend: React.PropTypes.func.isRequired
+  subscriptions: React.PropTypes.object.isRequired,
+  setLocale: React.PropTypes.func.isRequired
 };

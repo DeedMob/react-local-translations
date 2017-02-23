@@ -1,15 +1,3 @@
-export const addPrefixToKeys = (prefix, keys = {}) => {
-  let transformedMap = {};
-  const delimiter = '##';
-
-  Object.keys(keys).forEach((key, i) => {
-    transformedMap[prefix+delimiter+key] = keys[key]
-  });
-
-  return transformedMap;
-}
-
-
 export const compileLanguage = (locale, translations) => {
   const localeTranslation = {};
   for (const key in translations){
@@ -17,4 +5,18 @@ export const compileLanguage = (locale, translations) => {
       localeTranslation[key] = translations[key][locale];
   }
   return localeTranslation;
+}
+
+export class Subscribe {
+  constructor(){
+    this.subscriptions = [];
+  }
+
+  messageSubscribers(){
+    this.subscriptions.forEach(f => f())
+  }
+
+  subscribe(f){
+    this.subscriptions.push(f)
+  }
 }

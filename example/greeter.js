@@ -1,5 +1,8 @@
 import React from 'react';
 import { translate } from '../lib';
+import LanguageSelect from './languageSelect';
+
+console.log(<languageSelect/>);
 
 const translations = {
   "hello_name": {
@@ -14,7 +17,10 @@ const translations = {
 
 const Greeter = ({ name, t, g }) => {
   return (
-    <h3>{t('hello_name')}<b>{g('some_global', { name })}</b></h3>
+    <div>
+      <h3>{t('hello_name')}<b>{g('some_global', { name })}</b></h3>
+      <LanguageSelect/>
+    </div>
   )
 };
 

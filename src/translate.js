@@ -1,36 +1,59 @@
 import React from 'react';
-import { compileLanguage, addPrefixToKeys } from './utils';
+import { compileLanguage } from './utils';
+import Polyglot from 'node-polyglot';
 
 // higher order decorator for components that need `t`
-export default function translate(translations, useGlobals=false) {
-  return (WrappedComponent) => {
-    const _translate = (props, context) => {
-      // Extend translations
-      const namespace = WrappedComponent.constructor.displayName;
+const translate =
+  (translations, useGlobals=false, exposeSetLocale=false, exposeGetLocale = false) =>
+  (WrappedComponent) => {
+    class LocalTranslationProvider extends React.Component {
+      constructor(props, context){
+        super(props);
 
-      context.extend(addPrefixToKeys(namespace, compileLanguage(context.locale(), translations)));
+        // context should never change
+        this.context = context;
 
-      // augment t
-      const t = (key, ...args) => context.t(namespace+"##"+key, ...args)
+        this.translations = translations;
+        this.namespace = WrappedComponent.constructor.displayName;
+        this.state = {
+          _polyglot: this.getTranslations()
+        }
 
-      if(!useGlobals)
-        return (
-          <WrappedComponent {...props} t={t}/>
-        );
+        this.context.subscriptions.subscribe(() => {
+          this.setState({_polyglot: this.getTranslations()});
+          this.forceUpdate();
+          if(this.wrapped)
+            this.wrapped.forceUpdate()
+          // todo force child to update
+        });
 
-      const g = (key, ...args) => context.t("globals##"+key, ...args)
+        this.getTranslations = this.getTranslations.bind(this);
+      }
+      getTranslations(){
+        return new Polyglot({
+          locale: this.context.locale(),
+          phrases: compileLanguage(this.context.locale(), this.translations)
+        })
+      }
+      render(){
+        const exposed = Object.assign({}, {
+          t: this.state._polyglot.t.bind(this.state._polyglot),
+          g: useGlobals ? this.context.g : undefined,
+          setLocale: exposeSetLocale ? this.context.setLocale : undefined,
+          getLocale: exposeGetLocale ? this.context.locale : undefined
+        })
 
-      return (
-        <WrappedComponent {...props} t={t} g={g} />
-      );
+        return (<WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped}/>)
+      }
     }
 
-    _translate.contextTypes = {
-      t: React.PropTypes.func.isRequired,
+    LocalTranslationProvider.contextTypes = {
+      g: React.PropTypes.func.isRequired, // todo dynamically include this context based useGlobals
       locale: React.PropTypes.func.isRequired,
-      extend: React.PropTypes.func.isRequired
-    };
+      subscriptions: React.PropTypes.object.isRequired,
+      setLocale: React.PropTypes.func.isRequired
+    }
 
-    return _translate;
-  };
-}
+    return LocalTranslationProvider
+  }
+export default translate;
