@@ -27,7 +27,7 @@ And `messages` object containing the strings.
 ```js
 import React from 'react';
 import { render } from 'react-dom';
-import { I18nProvider } from '../lib';
+import { I18nProvider, LanguageHandler } from '../lib';
 import Greeter from './greeter';
 
 const locale = ['de', 'en'][Math.floor(Math.random()*2)];
@@ -43,8 +43,15 @@ const globals = {
   }
 }
 
+const localeChangeCallback = (locale) => alert(locale)
+
+export const l = new LanguageHandler("en", ["en", "de"], localeChangeCallback);
+
+// l.locale("de")
+// l.locale() i
+
 render(
-  <I18nProvider initialLocale={locale} globals={globals}>
+  <I18nProvider languageHandler={l} globals={globals}>
     <Greeter name="Batsy" />
   </I18nProvider>,
   document.getElementById('app')
@@ -136,13 +143,30 @@ export default translate(translations, false, true, true)(LanguageSelect)
 ```
 ## translate HOC
 
-*args*
-(translations, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false)
+Example:
+translate(translations: Object, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false)
+
+passing true to exposeGlobal passes the `g` function into the React Component's props.
+passing true to exposeSetLocale passes the `setLocale` function into the React Component's props  
+
 
 ## I18nProvider props
 
 (initialLocale: string, globals: Object)
 
+## LanguageHandler class
+
+constructor(initialLocale: string, supportedLanguages: Array<string>, onChange = () => null)
+
+`locale :: string -> boolean`
+Setter, returns true if successful (in supportedLanguages)
+
+`locale :: string`
+Getter, returns the current string.
+
+## Using the LanguageHandler class as an API
+
+Export the instance from wherever you create it and you can call the locale setter or getter to update the current language state.
 
 See above for an example of the translations/globals object
 

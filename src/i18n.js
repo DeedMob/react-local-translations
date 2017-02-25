@@ -7,9 +7,12 @@ export default class I18nProvider extends Component {
   constructor(props) {
     super(props);
 
+    this.languageHandler = props.languageHandler;
+    props.languageHandler.polyglotCallback = this.__setLocale.bind(this);
+
     this._polyglot = new Polyglot({
-      locale: props.initialLocale,
-      phrases: compileLanguage(props.initialLocale, props.globals)
+      locale: props.languageHandler.locale,
+      phrases: compileLanguage(props.languageHandler.locale, props.globals)
     });
     this._subscriptions = new Subscribe();
     this._allGlobals = props.globals;
@@ -24,13 +27,17 @@ export default class I18nProvider extends Component {
     };
   }
 
-  setLocale(locale){
+  __setLocale(locale){
     if(locale !== this._polyglot.locale()){
       this._polyglot.locale(locale);
       this._polyglot.clear();
       this._polyglot.extend(compileLanguage(locale, this._allGlobals));
       this._subscriptions.messageSubscribers();
     }
+  }
+
+  setLocale(locale){
+    this.languageHandler.locale = locale;
   }
 
   render() {
@@ -40,7 +47,7 @@ export default class I18nProvider extends Component {
 }
 
 I18nProvider.propTypes = {
-  initialLocale: React.PropTypes.string.isRequired,
+  languageHandler: React.PropTypes.object.isRequired,
   globals: React.PropTypes.object.isRequired,
   children: React.PropTypes.element.isRequired,
 };
