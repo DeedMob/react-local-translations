@@ -1,8 +1,7 @@
 import React from 'react';
 import { translate } from '../lib';
 import LanguageSelect from './languageSelect';
-
-console.log(<languageSelect/>);
+import ApiLanguageSelect from './apiLanguageSelect';
 
 const translations = {
   "hello_name": {
@@ -20,6 +19,7 @@ const Greeter = ({ name, t, g }) => {
     <div>
       <h3>{t('hello_name')}<b>{g('some_global', { name })}</b></h3>
       <LanguageSelect/>
+      <ApiLanguageSelect />
     </div>
   )
 };

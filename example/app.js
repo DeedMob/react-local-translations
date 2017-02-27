@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { I18nProvider, LanguageHandler } from '../lib';
+import { I18nProvider } from '../lib';
 import Greeter from './greeter';
+import language from './language';
 
 const locale = ['de', 'en'][Math.floor(Math.random()*2)];
 
@@ -16,12 +17,8 @@ const globals = {
   }
 }
 
-const localeChangeCallback = (locale) => console.log(locale);
-
-export const l = new LanguageHandler("en", ["en", "de"], localeChangeCallback);
-
 render(
-  <I18nProvider languageHandler={l} globals={globals}>
+  <I18nProvider languageHandler={language} globals={globals}>
     <Greeter name="Batsy" />
   </I18nProvider>,
   document.getElementById('app')

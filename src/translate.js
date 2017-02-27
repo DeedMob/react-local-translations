@@ -24,7 +24,6 @@ const translate =
           this.forceUpdate();
           if(this.wrapped)
             this.wrapped.forceUpdate()
-          // todo force child to update
         });
 
         this.getTranslations = this.getTranslations.bind(this);
@@ -36,19 +35,19 @@ const translate =
         })
       }
       render(){
-        const exposed = Object.assign({}, {
-          t: this.state._polyglot.t.bind(this.state._polyglot),
-          g: exposeGlobal ? this.context.g : undefined,
-          setLocale: exposeSetLocale ? this.context.setLocale : undefined,
-          getLocale: exposeGetLocale ? this.context.locale : undefined
-        })
+        const exposed = Object.assign(
+          { t: this.state._polyglot.t.bind(this.state._polyglot) },
+          (exposeSetLocale ? { setLocale: this.context.setLocale } : {}),
+          (exposeGlobal ? { g: this.context.g } : {}),
+          (exposeGetLocale ? { getLocale: this.context.locale } : {})
+        )
 
         return (<WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped}/>)
       }
     }
-
+    // todo dynamically change context based on expose options
     LocalTranslationProvider.contextTypes = {
-      g: React.PropTypes.func.isRequired, // todo dynamically include this context based exposeGlobal
+      g: React.PropTypes.func.isRequired,
       locale: React.PropTypes.func.isRequired,
       subscriptions: React.PropTypes.object.isRequired,
       setLocale: React.PropTypes.func.isRequired
