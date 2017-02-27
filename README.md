@@ -146,9 +146,15 @@ export default translate(translations, false, true, true)(LanguageSelect)
 Example:
 translate(translations: Object, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false)
 
+The translations for this component are available via the `t` prop.
 passing true to exposeGlobal passes the `g` function into the React Component's props.
-passing true to exposeSetLocale passes the `setLocale` function into the React Component's props  
+passing true to exposeSetLocale passes the `setLocale` function into the React Component's props
+passing true to exposeGetLocale passes the `getLocale` function into the React Component's props
 
+`getLocale :: () -> string`
+`setLocale :: string -> void`
+`g :: (string, options) -> string`
+`t :: (string, options) -> string`
 
 ## I18nProvider props
 
