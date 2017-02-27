@@ -10472,7 +10472,7 @@
 	        var _this = _possibleConstructorReturn(this, (LocalTranslationProvider.__proto__ || Object.getPrototypeOf(LocalTranslationProvider)).call(this, props));
 
 	        _this.context = context;
-
+	        _this._isMounted;
 	        _this.translations = translations;
 	        _this.namespace = WrappedComponent.constructor.displayName;
 	        _this.state = {
@@ -10480,9 +10480,11 @@
 	        };
 
 	        _this.context.subscriptions.subscribe(function () {
-	          _this.setState({ _polyglot: _this.getTranslations() });
-	          _this.forceUpdate();
-	          if (_this.wrapped) _this.wrapped.forceUpdate();
+	          if (_this._isMounted) {
+	            _this.setState({ _polyglot: _this.getTranslations() });
+	            _this.forceUpdate();
+	            if (_this.wrapped) _this.wrapped.forceUpdate();
+	          }
 	        });
 
 	        _this.getTranslations = _this.getTranslations.bind(_this);
@@ -10490,6 +10492,16 @@
 	      }
 
 	      _createClass(LocalTranslationProvider, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	          this._isMounted = true;
+	        }
+	      }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	          this._isMounted = false;
+	        }
+	      }, {
 	        key: 'getTranslations',
 	        value: function getTranslations() {
 	          return new _nodePolyglot2.default({

@@ -12,7 +12,7 @@ const translate =
 
         // context should never change
         this.context = context;
-
+        this._isMounted;
         this.translations = translations;
         this.namespace = WrappedComponent.constructor.displayName;
         this.state = {
@@ -20,13 +20,21 @@ const translate =
         }
 
         this.context.subscriptions.subscribe(() => {
-          this.setState({_polyglot: this.getTranslations()});
-          this.forceUpdate();
-          if(this.wrapped)
-            this.wrapped.forceUpdate()
+          if(this._isMounted){
+            this.setState({_polyglot: this.getTranslations()});
+            this.forceUpdate();
+            if(this.wrapped)
+              this.wrapped.forceUpdate()
+          }
         });
 
         this.getTranslations = this.getTranslations.bind(this);
+      }
+      componentDidMount(){
+        this._isMounted = true;
+      }
+      componentWillUnmount(){
+        this._isMounted = false;
       }
       getTranslations(){
         return new Polyglot({
