@@ -164,10 +164,11 @@ Setter, returns true if successful (in supportedLanguages)
 `locale :: string`
 Getter, returns the current string.
 
+`registerCallback :: f -> void`
+Adds a callback for when the language changes. Used internally, but you can add any amount of your own callbacks.
+
 ## Using the LanguageHandler class as an API
 
 Export the instance from wherever you create it and you can call the locale setter or getter to update the current language state.
 
 See above for an example of the translations/globals object
-
-### For reliable results unique react component names in project (as local translations are stored by their namespace)

@@ -9987,7 +9987,9 @@
 	    value: function render() {
 	      // This component doesn't rerender when the language changes
 	      // Use the languageHandler API in redux or outside react components
-	      // Setting the locale like this is fine, but the language.locale line here doesn't subscribe the component to updates like the @translate HOC does.
+	      // Setting the locale like this is fine, but using the language API to get the locale is unreliable as the component may not rerender when the language changes
+
+	      console.log(_language2.default.locale);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -9998,9 +10000,14 @@
 	        ),
 	        _react2.default.createElement(
 	          'select',
-	          { value: _language2.default.locale, onChange: function onChange(e) {
+	          { onChange: function onChange(e) {
 	              return _language2.default.locale = e.target.value;
 	            } },
+	          _react2.default.createElement(
+	            'option',
+	            { value: '-' },
+	            '-'
+	          ),
 	          _react2.default.createElement(
 	            'option',
 	            { value: 'en' },
@@ -10252,7 +10259,7 @@
 	    var _this = _possibleConstructorReturn(this, (I18nProvider.__proto__ || Object.getPrototypeOf(I18nProvider)).call(this, props));
 
 	    _this.languageHandler = props.languageHandler;
-	    props.languageHandler.polyglotCallback = _this._setLocale.bind(_this);
+	    props.languageHandler.registerCallback(_this._setLocale.bind(_this));
 
 	    _this._polyglot = new _nodePolyglot2.default({
 	      locale: props.languageHandler.locale,
@@ -10318,7 +10325,7 @@
 /* 94 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -10352,34 +10359,31 @@
 	    this.supportedLanguages = supportedLanguages;
 	    this.onChange = onChange;
 	    this._locale = initialLocale;
-	    this._polyglotCallback = function () {
-	      console.error('Polyglot Callback not set for languageHandler');
-	    };
+	    this._providerCallbacks = [];
 	  }
 
+	  // todo prevent duplicate registers of same I18nProvider?
+
+
 	  _createClass(LanguageHandler, [{
-	    key: 'locale',
+	    key: "registerCallback",
+	    value: function registerCallback(f) {
+	      this._providerCallbacks.push(f);
+	    }
+	  }, {
+	    key: "locale",
 	    get: function get() {
 	      return this._locale;
-	    }
-
-	    // do not call this function yourself, this is in I18nProvider
-
-	    , set: function set(locale) {
+	    },
+	    set: function set(locale) {
 	      if (this.supportedLanguages.indexOf(locale) !== -1) {
 	        this._locale = locale;
 	        this.onChange(locale);
-	        this._polyglotCallback(locale);
+	        this._providerCallbacks.map(function (f) {
+	          return f(locale);
+	        });
 	        return true;
 	      } else return false;
-	    }
-	  }, {
-	    key: 'polyglotCallback',
-	    set: function set(f) {
-	      this._polyglotCallback = f;
-	    },
-	    get: function get() {
-	      return this._polyglotCallback;
 	    }
 	  }]);
 

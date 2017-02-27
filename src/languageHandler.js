@@ -3,27 +3,19 @@ export default class LanguageHandler {
     this.supportedLanguages = supportedLanguages;
     this.onChange = onChange;
     this._locale = initialLocale;
-    this._polyglotCallback = () => { console.error('Polyglot Callback not set for languageHandler')};
+    this._providerCallbacks = [];
   }
 
-  get locale(){
-    return this._locale;
-  }
+  // todo prevent duplicate registers of same I18nProvider?
+  registerCallback(f){ this._providerCallbacks.push(f); }
 
-  // do not call this function yourself, this is in I18nProvider
-  set polyglotCallback(f){
-    this._polyglotCallback = f;
-  }
-
-  get polyglotCallback() {
-    return this._polyglotCallback;
-  }
+  get locale(){ return this._locale; }
 
   set locale(locale){
     if(this.supportedLanguages.indexOf(locale) !== -1){
       this._locale = locale;
       this.onChange(locale);
-      this._polyglotCallback(locale);
+      this._providerCallbacks.map(f => f(locale));
       return true
     }
     else

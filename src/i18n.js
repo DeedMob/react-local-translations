@@ -8,7 +8,7 @@ export default class I18nProvider extends Component {
     super(props);
 
     this.languageHandler = props.languageHandler;
-    props.languageHandler.polyglotCallback = this._setLocale.bind(this);
+    props.languageHandler.registerCallback(this._setLocale.bind(this));
 
     this._polyglot = new Polyglot({
       locale: props.languageHandler.locale,
