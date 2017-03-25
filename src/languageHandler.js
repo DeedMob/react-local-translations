@@ -12,7 +12,7 @@ export default class LanguageHandler {
   get locale(){ return this._locale; }
 
   set locale(locale){
-    if(this.supportedLanguages.indexOf(locale) !== -1){
+    if(this.supportedLanguages.indexOf(locale) !== -1 && this._locale !== locale){
       this._locale = locale;
       this.onChange(locale);
       this._providerCallbacks.map(f => f(locale));
