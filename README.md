@@ -11,6 +11,10 @@ npm install --save react-local-translations
 yarn add react-local-translations
 ```
 
+## Want the benefits of global translation files? Check out
+
+https://github.com/DeedMob/transform-translations
+
 ## Uses Polyglot.js
 
 http://airbnb.io/polyglot.js/
