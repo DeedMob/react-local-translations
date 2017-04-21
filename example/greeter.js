@@ -1,7 +1,8 @@
 import React from 'react';
-import { translate } from '../lib';
+import { translate, translateApi } from '../lib';
 import LanguageSelect from './languageSelect';
 import ApiLanguageSelect from './apiLanguageSelect';
+
 
 const translations = {
   "hello_name": {
@@ -14,12 +15,16 @@ const translations = {
   }
 }
 
+const t2 = translateApi(translations, "de").t;
+
 const Greeter = ({ name, t, g }) => {
   return (
     <div>
       <h3>{t('hello_name')}<b>{g('some_global', { name })}</b></h3>
       <LanguageSelect/>
       <ApiLanguageSelect />
+      {/* translateApi demonstration */}
+      {t2('some_key')}
     </div>
   )
 };
