@@ -61,6 +61,7 @@ render(
 Then inside `App` or a child component of `App` you can do:
 
 ```js
+
 import React from 'react';
 import { translate } from '../lib';
 import LanguageSelect from './languageSelect';
@@ -143,6 +144,8 @@ export default translate(translations, false, true, true)(LanguageSelect)
 ```
 ## translate HOC
 
+`import { translate } from 'react-local-translations'`
+
 Example:
 translate(translations: Object, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false)
 
@@ -155,6 +158,18 @@ passing true to exposeGetLocale passes the `getLocale` function into the React C
 `setLocale :: string -> void`
 `g :: (string, options) -> string`
 `t :: (string, options) -> string`
+
+## translateApi
+
+```js
+
+import translations from './translations';
+import { translateApi } from 'react-local-translations';
+const locale = 'en';
+const t = translateApi(translations, locale).t;
+console.log(t('someKey'));
+
+```
 
 ## I18nProvider props
 
