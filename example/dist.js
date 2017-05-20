@@ -10284,13 +10284,23 @@
 	      args[_key] = arguments[_key];
 	    }
 
+	    var str = t.apply(undefined, args);
+	    var color = green;
+	    if (!str || str === "") {
+	      str = "><" + args[0] + "><";
+	      color = red;
+	    }
+	    if (str === args[0]) {
+	      str = "><" + args[0] + "><";
+	      color = red;
+	    }
 	    return _react2.default.createElement("span", {
-	      style: { background: "red" },
+	      style: { background: color, border: "2px solid black" },
 	      onContextMenu: function onContextMenu(e) {
 	        e.preventDefault();
 	        alert("Path: " + d + " \nKey: " + args[0] + " \nTranslations: " + JSON.stringify(translations[args[0]], null, 2));
 	      }
-	    }, t.apply(undefined, args));
+	    }, str);
 	  };
 	};
 

@@ -19,7 +19,7 @@ https://github.com/DeedMob/transform-translations
 
 http://airbnb.io/polyglot.js/
 
-Notable quirks: 
+Notable quirks:
 - Will serve the template literal %{organizationName} if the variable has value undefined
 
 ## Usage
@@ -96,9 +96,9 @@ const Greeter = ({ name, t, g }) => {
 };
 
 Greeter.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  t: React.PropTypes.func.isRequired,
-  g: React.PropTypes.func.isRequired
+  name: PropTypes.string.isRequired,
+  t: PropTypes.func.isRequired,
+  g: PropTypes.func.isRequired
 };
 
 export default translate(translations, true)(Greeter);
@@ -180,7 +180,9 @@ console.log(t('someKey'));
 
 ## I18nProvider props
 
-(initialLocale: string, globals: Object)
+(initialLocale: string, globals: Object, debug: boolean)
+
+Debug defaults to false and when true highlights the text red and shows details on right click
 
 ## LanguageHandler class
 
