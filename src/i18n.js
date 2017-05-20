@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
 import { addPrefixToKeys, Subscribe, compileLanguage } from './utils';
 
@@ -7,6 +8,7 @@ export default class I18nProvider extends Component {
   constructor(props) {
     super(props);
 
+    this.debug = props.debug || false;
     this.languageHandler = props.languageHandler;
     props.languageHandler.registerCallback(this._setLocale.bind(this));
 
@@ -20,6 +22,7 @@ export default class I18nProvider extends Component {
 
   getChildContext() {
     return {
+      debug: this.debug,
       g: this._polyglot.t.bind(this._polyglot),
       locale: this._polyglot.locale.bind(this._polyglot),
       subscriptions: this._subscriptions,
@@ -47,14 +50,15 @@ export default class I18nProvider extends Component {
 }
 
 I18nProvider.propTypes = {
-  languageHandler: React.PropTypes.object.isRequired,
-  globals: React.PropTypes.object.isRequired,
-  children: React.PropTypes.element.isRequired,
+  languageHandler: PropTypes.object.isRequired,
+  globals: PropTypes.object.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 I18nProvider.childContextTypes = {
-  g: React.PropTypes.func.isRequired,
-  locale: React.PropTypes.func.isRequired,
-  subscriptions: React.PropTypes.object.isRequired,
-  setLocale: React.PropTypes.func.isRequired
+  debug: PropTypes.bool.isRequired,
+  g: PropTypes.func.isRequired,
+  locale: PropTypes.func.isRequired,
+  subscriptions: PropTypes.object.isRequired,
+  setLocale: PropTypes.func.isRequired
 };

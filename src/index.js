@@ -7,5 +7,5 @@ export {
   I18nProvider,
   translate,
   translateApi,
-  LanguageHandler
+  LanguageHandler,
 };

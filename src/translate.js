@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compileLanguage } from './utils';
+import debuggableTranslate from './debug';
 import Polyglot from 'node-polyglot';
 
 // higher order decorator for components that need `t`
@@ -48,17 +50,24 @@ const translate =
           (exposeSetLocale ? { setLocale: this.context.setLocale } : {}),
           (exposeGlobal ? { g: this.context.g } : {}),
           (exposeGetLocale ? { getLocale: this.context.locale } : {})
-        )
+        );
 
-        return (<WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped}/>)
+        if(this.context.debug){
+          // Augment t to return a complex component
+          return <WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped} t={debuggableTranslate(this.translations, exposed.t)}/>
+        }
+        else {
+          return <WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped}/>
+        }
       }
     }
     // todo dynamically change context based on expose options
     LocalTranslationProvider.contextTypes = {
-      g: React.PropTypes.func.isRequired,
-      locale: React.PropTypes.func.isRequired,
-      subscriptions: React.PropTypes.object.isRequired,
-      setLocale: React.PropTypes.func.isRequired
+      debug: PropTypes.bool.isRequired,
+      g: PropTypes.func.isRequired,
+      locale: PropTypes.func.isRequired,
+      subscriptions: PropTypes.object.isRequired,
+      setLocale: PropTypes.func.isRequired
     }
 
     return LocalTranslationProvider

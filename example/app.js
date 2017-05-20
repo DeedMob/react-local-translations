@@ -18,7 +18,7 @@ const globals = {
 }
 
 render(
-  <I18nProvider languageHandler={language} globals={globals}>
+  <I18nProvider languageHandler={language} globals={globals} debug={true}>
     <Greeter name="Batsy" />
   </I18nProvider>,
   document.getElementById('app')
