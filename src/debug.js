@@ -4,14 +4,14 @@ const d = __dirname;
 
 const debuggableTranslate = (translations, t) => (...args) => {
   let str = t(...args);
-  let color = green;
+  let color = 'green';
   if(!str || str === ""){
     str = `><${args[0]}><`;
-    color = red;
+    color = 'red';
   }
   if(str === args[0]){
     str = `><${args[0]}><`;
-    color = red;
+    color = 'red';
   }
   return (
     <span
