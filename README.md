@@ -15,9 +15,12 @@ yarn add react-local-translations
 
 https://github.com/DeedMob/transform-translations
 
-## Uses Polyglot.js
+## Uses Polyglot.js internally
 
 http://airbnb.io/polyglot.js/
+
+Notable quirks: 
+- Will serve the template literal %{organizationName} if the variable has value undefined
 
 ## Usage
 
