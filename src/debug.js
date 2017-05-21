@@ -1,8 +1,9 @@
 import React from 'react';
 
-const d = __dirname;
-
 const debuggableTranslate = (translations, t) => (...args) => {
+
+  const d = __dirname;
+
   let str = t(...args);
   let color = 'green';
   if(!str || str === ""){

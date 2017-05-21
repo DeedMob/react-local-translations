@@ -10276,13 +10276,13 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var d = __dirname;
-
 	var debuggableTranslate = function debuggableTranslate(translations, t) {
 	  return function () {
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
 	    }
+
+	    var d = __dirname;
 
 	    var str = t.apply(undefined, args);
 	    var color = 'green';
