@@ -35,4 +35,4 @@ Greeter.propTypes = {
   g: React.PropTypes.func.isRequired
 };
 
-export default translate(translations, true)(Greeter);
+export default translate(translations, { g: true })(Greeter);

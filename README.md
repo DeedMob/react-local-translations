@@ -101,7 +101,7 @@ Greeter.propTypes = {
   g: PropTypes.func.isRequired
 };
 
-export default translate(translations, true)(Greeter);
+export default translate(translations, { g: true })(Greeter);
 
 ```
 
@@ -154,12 +154,12 @@ export default translate(translations, false, true, true)(LanguageSelect)
 `import { translate } from 'react-local-translations'`
 
 Example:
-translate(translations: Object, exposeGlobal=false, exposeSetLocale=false, exposeGetLocale = false)
+translate(translations: Object, {g = false, setLocale = false, getLocale = false})
 
 The translations for this component are available via the `t` prop.
-passing true to exposeGlobal passes the `g` function into the React Component's props.
-passing true to exposeSetLocale passes the `setLocale` function into the React Component's props
-passing true to exposeGetLocale passes the `getLocale` function into the React Component's props
+assigning true to g in the second argument (options) passes the `g` function into the React Component's props.
+assigning true to setLocale in the second argument (options) passes the `setLocale` function into the React Component's props
+assigning true to getLocale in the second argument (options) passes the `getLocale` function into the React Component's props
 
 `getLocale :: () -> string`
 `setLocale :: string -> void`

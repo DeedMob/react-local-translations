@@ -10724,7 +10724,7 @@
 	  g: _react2.default.PropTypes.func.isRequired
 	};
 
-	exports.default = (0, _lib.translate)(translations, true)(Greeter);
+	exports.default = (0, _lib.translate)(translations, { g: true })(Greeter);
 
 /***/ },
 /* 95 */
@@ -10822,7 +10822,7 @@
 	  return LanguageSelect;
 	}(_react2.default.Component);
 
-	exports.default = (0, _lib.translate)(translations, false, true, true)(LanguageSelect);
+	exports.default = (0, _lib.translate)(translations, { setLocale: true, getLocale: true })(LanguageSelect);
 
 /***/ },
 /* 96 */
@@ -11151,10 +11151,13 @@
 	}
 
 	// higher order decorator for components that need `t`
-	var translate = function translate(translations) {
-	  var exposeGlobal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-	  var exposeSetLocale = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-	  var exposeGetLocale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+	var translate = function translate(translations, _ref) {
+	  var _ref$g = _ref.g,
+	      g = _ref$g === undefined ? false : _ref$g,
+	      _ref$setLocale = _ref.setLocale,
+	      setLocale = _ref$setLocale === undefined ? false : _ref$setLocale,
+	      _ref$getLocale = _ref.getLocale,
+	      getLocale = _ref$getLocale === undefined ? false : _ref$getLocale;
 	  return function (WrappedComponent) {
 	    var LocalTranslationProvider = function (_React$Component) {
 	      _inherits(LocalTranslationProvider, _React$Component);
@@ -11208,7 +11211,7 @@
 	        value: function render() {
 	          var _this2 = this;
 
-	          var exposed = Object.assign({ t: this.state._polyglot.t.bind(this.state._polyglot) }, exposeSetLocale ? { setLocale: this.context.setLocale } : {}, exposeGlobal ? { g: this.context.g } : {}, exposeGetLocale ? { getLocale: this.context.locale } : {});
+	          var exposed = Object.assign({ t: this.state._polyglot.t.bind(this.state._polyglot) }, setLocale ? { setLocale: this.context.setLocale } : {}, g ? { g: this.context.g } : {}, getLocale ? { getLocale: this.context.locale } : {});
 
 	          if (this.context.debug) {
 	            // Augment t to return a complex component

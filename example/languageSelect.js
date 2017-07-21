@@ -36,4 +36,4 @@ class LanguageSelect extends React.Component {
   }
 }
 
-export default translate(translations, false, true, true)(LanguageSelect)
+export default translate(translations, { setLocale: true, getLocale: true })(LanguageSelect)
