@@ -6,7 +6,7 @@ import Polyglot from 'node-polyglot';
 
 // higher order decorator for components that need `t`
 const translate =
-  (translations, { g = false, setLocale = false, getLocale = false }) =>
+  (translations, { g = false, setLocale = false, getLocale = false } = {}) =>
   (WrappedComponent) => {
     class LocalTranslationProvider extends React.Component {
       constructor(props, context){
@@ -62,13 +62,15 @@ const translate =
       }
     }
     // todo dynamically change context based on expose options
-    LocalTranslationProvider.contextTypes = {
-      debug: PropTypes.bool.isRequired,
-      g: PropTypes.func.isRequired,
-      locale: PropTypes.func.isRequired,
-      subscriptions: PropTypes.object.isRequired,
-      setLocale: PropTypes.func.isRequired
-    }
+    LocalTranslationProvider.contextTypes = Object.assign(
+      {
+        debug: PropTypes.bool.isRequired,
+        locale: PropTypes.func.isRequired,
+        subscriptions: PropTypes.object.isRequired,
+      },
+      g ? {g: PropTypes.func.isRequired} : {},
+      setLocale ? {setLocale: PropTypes.func.isRequired} : {}
+    )
 
     return LocalTranslationProvider
   }

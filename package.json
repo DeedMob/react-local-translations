@@ -1,6 +1,6 @@
 {
   "name": "react-local-translations",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Higher order React component for using Polyglot",
   "main": "lib/index.js",
   "files": [
