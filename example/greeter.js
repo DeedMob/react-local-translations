@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { translate, translateApi } from '../lib';
 import LanguageSelect from './languageSelect';
 import ApiLanguageSelect from './apiLanguageSelect';
@@ -30,9 +31,9 @@ const Greeter = ({ name, t, g }) => {
 };
 
 Greeter.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  t: React.PropTypes.func.isRequired,
-  g: React.PropTypes.func.isRequired
+  name: PropTypes.string.isRequired,
+  t: PropTypes.func.isRequired,
+  g: PropTypes.func.isRequired
 };
 
 export default translate(translations, { g: true })(Greeter);

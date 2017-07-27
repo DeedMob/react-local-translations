@@ -128,9 +128,6 @@ const translations = {
 }
 
 class LanguageSelect extends React.Component {
-  shouldComponentUpdate(){
-    return false;
-  }
   render(){
     const { t, setLocale, getLocale } = this.props;
     const locale = getLocale();

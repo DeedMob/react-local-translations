@@ -17,10 +17,6 @@ const translations = {
 }
 
 class LanguageSelect extends React.Component {
-  shouldComponentUpdate(){
-    // demonstrates that translations transcend react component shouldComponentUpdates.
-    return false;
-  }
   render(){
     const { t, setLocale, getLocale } = this.props;
     const locale = getLocale();

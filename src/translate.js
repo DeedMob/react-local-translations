@@ -24,9 +24,6 @@ const translate =
         this.context.subscriptions.subscribe(() => {
           if(this._isMounted){
             this.setState({_polyglot: this.getTranslations()});
-            this.forceUpdate();
-            if(this.wrapped)
-              this.wrapped.forceUpdate()
           }
         });
 
@@ -54,10 +51,10 @@ const translate =
 
         if(this.context.debug){
           // Augment t to return a complex component
-          return <WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped} t={debuggableTranslate(this.translations, exposed.t)}/>
+          return <WrappedComponent {...this.props} {...exposed} t={debuggableTranslate(this.translations, exposed.t)}/>
         }
         else {
-          return <WrappedComponent {...this.props} {...exposed} ref={(wrapped) => this.wrapped = wrapped}/>
+          return <WrappedComponent {...this.props} {...exposed}/>
         }
       }
     }
