@@ -9,7 +9,7 @@ export default class I18nProvider extends Component {
     languageHandler: PropTypes.object.isRequired,
     globals: PropTypes.object.isRequired,
     children: PropTypes.element.isRequired,
-    allowMissing: PropTypes.boolean,
+    allowMissing: PropTypes.bool,
     onMissingKey: PropTypes.func
   };
 
