@@ -177,9 +177,11 @@ console.log(t('someKey'));
 
 ## I18nProvider props
 
-(initialLocale: string, globals: Object, debug: boolean)
+(initialLocale: string, globals: Object, debug: boolean, allowMissing = false: boolean, onMissingKey = () => null : func)
 
 Debug defaults to false and when true highlights the text red and shows details on right click
+
+See https://github.com/airbnb/polyglot.js#options-overview for allowMissing and onMissingKey docs
 
 ## LanguageHandler class
 

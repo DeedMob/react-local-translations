@@ -2,6 +2,7 @@ import React from 'react';
 import { compileLanguage } from './utils';
 import Polyglot from 'node-polyglot';
 
+// TODO add allowMissing, onMissingKey behaviour
 class PolyglotFactory {
   constructor(translations, locale){
     this.polyglot = new Polyglot({

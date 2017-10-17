@@ -38,7 +38,9 @@ const translate =
       getTranslations(){
         return new Polyglot({
           locale: this.context.locale(),
-          phrases: compileLanguage(this.context.locale(), this.translations)
+          phrases: compileLanguage(this.context.locale(), this.translations),
+          allowMissing: this.context.allowMissing,
+          onMissingKey: this.context.onMissingKey
         })
       }
       render(){
@@ -61,6 +63,8 @@ const translate =
     // todo dynamically change context based on expose options
     LocalTranslationProvider.contextTypes = Object.assign(
       {
+        allowMissing: PropTypes.bool.isRequired,
+        onMissingKey: PropTypes.func.isRequired,
         debug: PropTypes.bool.isRequired,
         locale: PropTypes.func.isRequired,
         subscriptions: PropTypes.object.isRequired,

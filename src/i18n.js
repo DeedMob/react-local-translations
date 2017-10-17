@@ -5,16 +5,41 @@ import { addPrefixToKeys, Subscribe, compileLanguage } from './utils';
 
 // Provider root component
 export default class I18nProvider extends Component {
+  static propTypes = {
+    languageHandler: PropTypes.object.isRequired,
+    globals: PropTypes.object.isRequired,
+    children: PropTypes.element.isRequired,
+    allowMissing: PropTypes.boolean,
+    onMissingKey: PropTypes.func
+  };
+
+  static defaultProps = {
+    allowMissing: false,
+    onMissingKey: () => null
+  }
+
+  static childContextTypes = {
+    allowMissing: PropTypes.boolean.isRequired,
+    onMissingKey: PropTypes.func.isRequired,
+    debug: PropTypes.bool.isRequired,
+    g: PropTypes.func.isRequired,
+    locale: PropTypes.func.isRequired,
+    subscriptions: PropTypes.object.isRequired,
+    setLocale: PropTypes.func.isRequired
+  };
   constructor(props) {
     super(props);
 
     this.debug = props.debug || false;
     this.languageHandler = props.languageHandler;
     props.languageHandler.registerCallback(this._setLocale.bind(this));
-
+    this.allowMissing = props.allowMissing;
+    this.onMissingKey = props.onMissingKey;
     this._polyglot = new Polyglot({
       locale: props.languageHandler.locale,
-      phrases: compileLanguage(props.languageHandler.locale, props.globals)
+      phrases: compileLanguage(props.languageHandler.locale, props.globals),
+      allowMissing: this.allowMissing,
+      onMissingKey: this.onMissingKey
     });
     this._subscriptions = new Subscribe();
     this._allGlobals = props.globals;
@@ -22,6 +47,8 @@ export default class I18nProvider extends Component {
 
   getChildContext() {
     return {
+      allowMissing: this.allowMissing,
+      onMissingKey: this.onMissingKey,
       debug: this.debug,
       g: this._polyglot.t.bind(this._polyglot),
       locale: this._polyglot.locale.bind(this._polyglot),
@@ -48,17 +75,3 @@ export default class I18nProvider extends Component {
     return React.Children.only(children);
   }
 }
-
-I18nProvider.propTypes = {
-  languageHandler: PropTypes.object.isRequired,
-  globals: PropTypes.object.isRequired,
-  children: PropTypes.element.isRequired,
-};
-
-I18nProvider.childContextTypes = {
-  debug: PropTypes.bool.isRequired,
-  g: PropTypes.func.isRequired,
-  locale: PropTypes.func.isRequired,
-  subscriptions: PropTypes.object.isRequired,
-  setLocale: PropTypes.func.isRequired
-};
