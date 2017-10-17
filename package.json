@@ -1,6 +1,6 @@
 {
   "name": "react-local-translations",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Higher order React component for using Polyglot",
   "main": "lib/index.js",
   "files": [
@@ -31,12 +31,10 @@
     "url": "https://github.com/DeedMob/react-location-translations/issues"
   },
   "homepage": "https://github.com/DeedMob/react-location-translations#readme",
-  "peerDependencies": {
+  "dependencies": {
+    "node-polyglot": "^2.0.0",
     "react": "^15.5.4",
     "prop-types": "^15.5.10"
-  },
-  "dependencies": {
-    "node-polyglot": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
