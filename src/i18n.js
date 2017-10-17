@@ -19,7 +19,7 @@ export default class I18nProvider extends Component {
   }
 
   static childContextTypes = {
-    allowMissing: PropTypes.boolean.isRequired,
+    allowMissing: PropTypes.bool.isRequired,
     onMissingKey: PropTypes.func.isRequired,
     debug: PropTypes.bool.isRequired,
     g: PropTypes.func.isRequired,
