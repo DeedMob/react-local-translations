@@ -12,7 +12,7 @@ const translate =
       constructor(props, context){
         super(props);
 
-        // context should never change
+        // Context should never change
         this.context = context;
         this._isMounted;
         this.translations = translations;
@@ -21,11 +21,14 @@ const translate =
           _polyglot: this.getTranslations()
         }
 
-        this.context.subscriptions.subscribe(() => {
-          if(this._isMounted){
-            this.setState({_polyglot: this.getTranslations()});
-          }
-        });
+        // Don't subscribe to updates on the server.
+        // This was causing a memory leak
+        if(typeof window !== 'undefined')
+          this.context.subscriptions.subscribe(() => {
+            if(this._isMounted){
+              this.setState({_polyglot: this.getTranslations()});
+            }
+          });
 
         this.getTranslations = this.getTranslations.bind(this);
       }
@@ -34,6 +37,7 @@ const translate =
       }
       componentWillUnmount(){
         this._isMounted = false;
+        // TODO: unsubscribe!
       }
       getTranslations(){
         return new Polyglot({
