@@ -118,11 +118,11 @@ const translations = {
     "en": "English"
   },
   german: {
-    "de": "Deutch",
+    "de": "Deutsch",
     "en": "German"
   },
   selectLanguage: {
-    de: "Bitte Sprache Waehlen",
+    de: "Bitte Sprache wählen",
     en: "Select a language"
   }
 }
