@@ -8,34 +8,38 @@ import Polyglot from "node-polyglot";
 const translate = translations => WrappedComponent => {
   class LocalTranslationProvider extends React.Component {
     constructor(props, context) {
-      super(props);
+      super(props, context);
 
-      // Context should never change
-      this.context = context;
-      this._isMounted;
+      this._isMounted = false;
       this.translations = translations;
       this.namespace = WrappedComponent.constructor.displayName;
+
+      const polyglot = this.getTranslations();
       this.state = {
-        _polyglot: this.getTranslations()
+        _polyglot: polyglot,
+        t: polyglot.t.bind(polyglot)
       };
+
+      this.getTranslations = this.getTranslations.bind(this);
+      this.subscribeToChanges = this.subscribeToChanges.bind(this);
 
       // Don't subscribe to updates on the server.
       // This was causing a memory leak
       if (typeof window !== "undefined")
-        this.context.subscriptions.subscribe(() => {
-          if (this._isMounted) {
-            this.setState({ _polyglot: this.getTranslations() });
-          }
-        });
-
-      this.getTranslations = this.getTranslations.bind(this);
+        this.context.subscriptions.subscribe(this.subscribeToChanges);
+    }
+    subscribeToChanges() {
+      if (this._isMounted) {
+        const polyglot = this.getTranslations();
+        this.setState({ _polyglot: polyglot, t: polyglot.t.bind(polyglot) });
+      }
     }
     componentDidMount() {
       this._isMounted = true;
     }
     componentWillUnmount() {
       this._isMounted = false;
-      // TODO: unsubscribe!
+      this.context.subscriptions.unsubscribe(this.subscribeToChanges);
     }
     getTranslations() {
       return new Polyglot({
@@ -47,7 +51,7 @@ const translate = translations => WrappedComponent => {
     }
     render() {
       const exposed = {
-        t: this.state._polyglot.t.bind(this.state._polyglot),
+        t: this.state.t,
         setLocale: this.context.setLocale,
         g: this.context.g,
         getLocale: this.context.locale
@@ -75,8 +79,7 @@ const translate = translations => WrappedComponent => {
     locale: PropTypes.func.isRequired,
     subscriptions: PropTypes.object.isRequired,
     g: PropTypes.func.isRequired,
-    setLocale: PropTypes.func.isRequired,
-    getLocale: PropTypes.func.isRequired
+    setLocale: PropTypes.func.isRequired
   };
 
   return LocalTranslationProvider;

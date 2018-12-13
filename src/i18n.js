@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Polyglot from 'node-polyglot';
-import { addPrefixToKeys, Subscribe, compileLanguage } from './utils';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Polyglot from "node-polyglot";
+import { Subscribe, compileLanguage } from "./utils";
 
 // Provider root component
 export default class I18nProvider extends Component {
@@ -16,7 +16,7 @@ export default class I18nProvider extends Component {
   static defaultProps = {
     allowMissing: false,
     onMissingKey: () => null
-  }
+  };
 
   static childContextTypes = {
     allowMissing: PropTypes.bool.isRequired,
@@ -57,8 +57,8 @@ export default class I18nProvider extends Component {
     };
   }
 
-  _setLocale(locale){
-    if(locale !== this._polyglot.locale()){
+  _setLocale(locale) {
+    if (locale !== this._polyglot.locale()) {
       this._polyglot.locale(locale);
       this._polyglot.clear();
       this._polyglot.extend(compileLanguage(locale, this._allGlobals));
@@ -66,7 +66,7 @@ export default class I18nProvider extends Component {
     }
   }
 
-  setLocale(locale){
+  setLocale(locale) {
     this.languageHandler.locale = locale;
   }
 

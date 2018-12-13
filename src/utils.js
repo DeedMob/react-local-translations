@@ -1,22 +1,29 @@
 export const compileLanguage = (locale, translations) => {
   const localeTranslation = {};
-  for (const key in translations){
-    if(translations.hasOwnProperty(key))
+  for (const key in translations) {
+    if (translations.hasOwnProperty(key))
       localeTranslation[key] = translations[key][locale];
   }
   return localeTranslation;
-}
+};
 
 export class Subscribe {
-  constructor(){
+  constructor() {
     this.subscriptions = [];
   }
 
-  messageSubscribers(){
-    this.subscriptions.forEach(f => f())
+  messageSubscribers() {
+    this.subscriptions.forEach(f => f());
   }
 
-  subscribe(f){
-    this.subscriptions.push(f)
+  subscribe(f) {
+    this.subscriptions.push(f);
+  }
+
+  unsubscribe(f) {
+    const sub = this.subscriptions.indexOf(f);
+    if (sub !== -1) {
+      this.subscriptions.splice(sub, 1);
+    }
   }
 }
