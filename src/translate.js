@@ -22,11 +22,6 @@ const translate = translations => WrappedComponent => {
 
       this.getTranslations = this.getTranslations.bind(this);
       this.subscribeToChanges = this.subscribeToChanges.bind(this);
-
-      // Don't subscribe to updates on the server.
-      // This was causing a memory leak
-      if (typeof window !== "undefined")
-        this.context.subscriptions.subscribe(this.subscribeToChanges);
     }
     subscribeToChanges() {
       if (this._isMounted) {
@@ -36,6 +31,7 @@ const translate = translations => WrappedComponent => {
     }
     componentDidMount() {
       this._isMounted = true;
+      this.context.subscriptions.subscribe(this.subscribeToChanges);
     }
     componentWillUnmount() {
       this._isMounted = false;
@@ -44,7 +40,11 @@ const translate = translations => WrappedComponent => {
     getTranslations() {
       return new Polyglot({
         locale: this.context.locale(),
-        phrases: compileLanguage(this.context.locale(), this.translations),
+        phrases: compileLanguage(
+          this.context.locale(),
+          this.translations,
+          this.context.fallbackLocale
+        ),
         allowMissing: this.context.allowMissing,
         onMissingKey: this.context.onMissingKey
       });
@@ -79,7 +79,8 @@ const translate = translations => WrappedComponent => {
     locale: PropTypes.func.isRequired,
     subscriptions: PropTypes.object.isRequired,
     g: PropTypes.func.isRequired,
-    setLocale: PropTypes.func.isRequired
+    setLocale: PropTypes.func.isRequired,
+    fallbackLocale: PropTypes.string.isRequired
   };
 
   return LocalTranslationProvider;
