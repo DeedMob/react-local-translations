@@ -3,7 +3,7 @@ export const compileLanguage = (locale, translations, fallbackLocale) => {
   for (const key in translations) {
     if (translations.hasOwnProperty(key))
       localeTranslation[key] =
-        translations[key][locale] || translations[key][fallbackLocale];
+        translations[key].hasOwnProperty(locale) ? translations[key][locale] : translations[key][fallbackLocale];
   }
   return localeTranslation;
 };
