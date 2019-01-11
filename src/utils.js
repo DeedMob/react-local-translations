@@ -1,8 +1,9 @@
-export const compileLanguage = (locale, translations) => {
+export const compileLanguage = (locale, translations, fallbackLocale) => {
   const localeTranslation = {};
   for (const key in translations) {
     if (translations.hasOwnProperty(key))
-      localeTranslation[key] = translations[key][locale];
+      localeTranslation[key] =
+        translations[key].hasOwnProperty(locale) ? translations[key][locale] : translations[key][fallbackLocale];
   }
   return localeTranslation;
 };

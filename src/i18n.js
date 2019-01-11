@@ -10,11 +10,13 @@ export default class I18nProvider extends Component {
     globals: PropTypes.object.isRequired,
     children: PropTypes.element.isRequired,
     allowMissing: PropTypes.bool,
+    fallbackLocale: PropTypes.string,
     onMissingKey: PropTypes.func
   };
 
   static defaultProps = {
     allowMissing: false,
+    fallbackLocale: "",
     onMissingKey: () => null
   };
 
@@ -25,28 +27,43 @@ export default class I18nProvider extends Component {
     g: PropTypes.func.isRequired,
     locale: PropTypes.func.isRequired,
     subscriptions: PropTypes.object.isRequired,
-    setLocale: PropTypes.func.isRequired
+    setLocale: PropTypes.func.isRequired,
+    fallbackLocale: PropTypes.string.isRequired
   };
   constructor(props) {
     super(props);
 
     this.debug = props.debug || false;
     this.languageHandler = props.languageHandler;
-    props.languageHandler.registerCallback(this._setLocale.bind(this));
+    this.fallbackLocale = props.fallbackLocale;
     this.allowMissing = props.allowMissing;
     this.onMissingKey = props.onMissingKey;
     this._polyglot = new Polyglot({
       locale: props.languageHandler.locale,
-      phrases: compileLanguage(props.languageHandler.locale, props.globals),
+      phrases: compileLanguage(
+        props.languageHandler.locale,
+        props.globals,
+        this.fallbackLocale
+      ),
       allowMissing: this.allowMissing,
       onMissingKey: this.onMissingKey
     });
     this._subscriptions = new Subscribe();
     this._allGlobals = props.globals;
+    this._setLocale = this._setLocale.bind(this);
+  }
+
+  componentDidMount() {
+    this.languageHandler.registerCallback(this._setLocale);
+  }
+
+  componentWillUnmount() {
+    props.languageHandler.unregisterCallback(this._setLocale);
   }
 
   getChildContext() {
     return {
+      fallbackLocale: this.fallbackLocale,
       allowMissing: this.allowMissing,
       onMissingKey: this.onMissingKey,
       debug: this.debug,
