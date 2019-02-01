@@ -58,7 +58,7 @@ export default class I18nProvider extends Component {
   }
 
   componentWillUnmount() {
-    props.languageHandler.unregisterCallback(this._setLocale);
+    this.languageHandler.unregisterCallback(this._setLocale);
   }
 
   getChildContext() {
