@@ -1,0 +1,30 @@
+{
+  "greeting": {
+    "en": "Hello, %{name}.",
+    "de": "Hallo, %{name}"
+  },
+  "greeting_capitalized": {
+    "en": "Hello, %{name | cap}.",
+    "de": "Hallo, %{name | cap}"
+  },
+  "num_cars": {
+    "en": "%{smart_count} car |||| %{smart_count} cars",
+    "de": "%{smart_count} auto |||| %{smart_count} autos"
+  },
+  "english": {
+    "de": "Englisch",
+    "en": "English"
+  },
+  "german": {
+    "de": "Deutsch",
+    "en": "German"
+  },
+  "selectLanguage": {
+    "de": "Bitte Sprache wählen",
+    "en": "Select a language"
+  },
+  "languages": {
+    "en": "%{t:english}, %{t:german}",
+    "de": "%{t:english}, %{t:german}"
+  }
+}
