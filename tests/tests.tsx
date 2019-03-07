@@ -18,6 +18,7 @@ function HooksComponent() {
         t('selectLanguage'),
         t('languages'),
         t('missing-key'),
+        t('preprocessme'),
       ].map(val => (
         <span key={val}>{val}</span>
       ))}
@@ -31,6 +32,10 @@ const transforms = {
   },
 };
 
+function preprocess(k: string) {
+  if (k === 'preprocessme') return '{.preprocess.}';
+}
+
 function postprocess(s: string) {
   return `{${s}}`;
 }
@@ -42,7 +47,8 @@ function convertMissingKey(k: string) {
 for (const locale of ['en', 'de']) {
   console.log(
     (ReactTestRenderer.create(
-      <I18n.Provider value={{ locale, transforms, postprocess, convertMissingKey }}>
+      <I18n.Provider
+        value={{ locale, transforms, preprocess, postprocess, convertMissingKey }}>
         <HooksComponent />
       </I18n.Provider>
     ).toJSON() as any).map((node: any) => node.children[0])

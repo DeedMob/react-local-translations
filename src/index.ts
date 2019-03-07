@@ -10,6 +10,10 @@ export interface Translations {
 }
 
 export type ConvertMissingKey = (key: string, translations: Translations) => string;
+export type Preprocess = (
+  key: string,
+  translations: Translations
+) => string | boolean | undefined | null | void;
 export type Postprocess = (phrase: string) => string | React.ReactNode;
 export interface Transforms {
   [name: string]: (value: any) => string | number;

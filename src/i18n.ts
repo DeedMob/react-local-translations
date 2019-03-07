@@ -1,5 +1,5 @@
 import React from 'react';
-import { Translations, ConvertMissingKey, Postprocess, Transforms } from './';
+import { Translations, ConvertMissingKey, Postprocess, Transforms, Preprocess } from './';
 
 interface I18nContext {
   locale: string;
@@ -13,6 +13,15 @@ interface I18nContext {
    * Obviously, it is much more widely useful than that. Use your imagination, but try to keep things understandable.
    */
   transforms?: Transforms;
+  /**
+   * Pre-processing of the key passed to t() or g(). If this function is passed,
+   * t/g() returns the result of preprocess(key) if it's truthy, with no further processing occurring.
+   * Returning '' or false makes the flow continue as usual.
+   *
+   * You can determine whether the translation is global by
+   * comparing `translations (second argument) === your globalTranslations`.
+   */
+  preprocess?: Preprocess;
   /**
    * Context-wide postprocessing of translation phrases.
    *

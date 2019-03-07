@@ -4,6 +4,7 @@ import {
   Transforms,
   TranslateLocal,
   Postprocess,
+  Preprocess,
 } from '.';
 
 const TOKEN_START = '%{';
@@ -34,6 +35,7 @@ interface TranslateOptions {
   globalTranslations?: Translations;
   convertMissingKey?: ConvertMissingKey;
   transforms?: Transforms;
+  preprocess?: Preprocess;
   postprocess?: Postprocess;
 }
 
@@ -43,6 +45,7 @@ export default function translate({
   globalTranslations = {},
   convertMissingKey,
   transforms = {},
+  preprocess,
   postprocess,
 }: TranslateOptions): TranslateLocal {
   function usePhrase(trs: Translations, key: string) {
@@ -52,6 +55,11 @@ export default function translate({
   }
   function usingTranslations(trs: Translations) {
     function tr(key: string, interpolation?: any) {
+      if (preprocess) {
+        const preprocessedKey = preprocess(key, trs);
+        if (preprocessedKey) return '' + preprocessedKey;
+      }
+
       const phrase = usePhrase(trs, key);
 
       // as any as string: to remove React.ReactNode from types

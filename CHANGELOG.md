@@ -5,6 +5,7 @@
 - Migrate to React Context
 - Added: reference other translations: %{t:local_tr}, %{g:local_tr}. Especially useful with global translations.
 - Added: transforms, e.g. to capitalize certain words (especially useful in a language like German). Uses %{translation_key | transform} syntax.
+- Added: preprocess, useful for implementing Live Translation.
 - Added: postprocess, e.g. to convert markdown in your translations, as to keep them free of HTML.
 - Removed: LanguageHandler, Subscription, and other legacy React Context hacks.
 - Replaced: node-polyglot with a trimmed, improved version
