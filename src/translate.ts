@@ -84,8 +84,8 @@ export default function translate({
         result = parts[part > parts.length ? 0 : part].trim();
       }
       // %{var} -> interp["var"]
-      // %{g:tr_key} -> translations["tr_key"]
-      // %{t:tr_key} -> globalTranslations["tr_key"]
+      // %{t:tr_key} -> translations["tr_key"]
+      // %{g:tr_key} -> globalTranslations["tr_key"]
       // %{var | transform} -> transforms["transform"](interp["var"])
       result = result.replace(TOKEN_REGEX, (_, expr) => {
         // Remove %{ and } by using arguments[1]
