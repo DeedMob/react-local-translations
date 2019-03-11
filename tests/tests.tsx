@@ -14,6 +14,7 @@ function HooksComponent() {
         t('greeting_capitalized', { name: 'lowercase' }),
         t('num_cars', 10),
         t('english'),
+        t('english_capitalized'),
         t('german'),
         t('selectLanguage'),
         t('languages'),

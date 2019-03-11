@@ -15,6 +15,14 @@
     "de": "Englisch",
     "en": "English"
   },
+  "english_lower": {
+    "de": "englisch",
+    "en": "english"
+  },
+  "english_capitalized": {
+    "de": "%{t:english_lower | cap}",
+    "en": "%{t:english_lower | cap}"
+  },
   "german": {
     "de": "Deutsch",
     "en": "German"

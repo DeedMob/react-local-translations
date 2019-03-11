@@ -92,18 +92,17 @@ export default function translate({
         let replacement = '';
 
         const inlineTranslationType = expr[0];
+        const transformChain = expr.split(TRANSFORM_DELIMITER);
         if (
           (inlineTranslationType === 't' || inlineTranslationType === 'g') &&
           expr[1] === ':'
         ) {
-          expr = expr.substr(2);
           replacement = usePhrase(
             inlineTranslationType === 't' ? translations : globalTranslations,
-            expr
+            transformChain[0].substr(2)
           );
         }
 
-        const transformChain = expr.split(TRANSFORM_DELIMITER);
         if (!replacement) replacement = interp[transformChain[0]];
 
         for (let i = 1; i < transformChain.length; i += 1) {
