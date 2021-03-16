@@ -40,6 +40,6 @@ export type TranslateGlobal = TranslateType;
 /** number sets smart_count behavior */
 export type Interpolation =
   | {
-      [key: string]: string | number;
+      [key: string]: string | number | object;
     }
   | number;

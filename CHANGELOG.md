@@ -14,3 +14,7 @@
 - Removed: setLocale. This is rarely useful; we recommend setting the locale via (sub)domain instead of directory. If necessary this can be re-implemented using another context and setting I18n.Provider's `value={{locale:..}}`.
 - Changed: onMissingKey -> convertMissingKey, now also takes the translations object as a second parameter.
 - Removed: fallbackLocale. Use convertMissingKey's second parameter.
+
+# 5.1.0
+
+- Added: access nested properties by using dot notation. %{user.name} by passing in a user object { user: { name: 'David' }} as the second argument to a translate call

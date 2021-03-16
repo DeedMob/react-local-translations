@@ -29,5 +29,5 @@ export interface TranslateLocal extends TranslateType {
 }
 export declare type TranslateGlobal = TranslateType;
 export declare type Interpolation = {
-    [key: string]: string | number;
+    [key: string]: string | number | object;
 } | number;

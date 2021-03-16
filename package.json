@@ -1,6 +1,6 @@
 {
   "name": "react-local-translations",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "Miniature Polyglot.js-based i18n for React, keeping translation files local to React components a la CSS Modules. Supports Hooks.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -11,13 +11,13 @@
     "en": "%{smart_count} car |||| %{smart_count} cars",
     "de": "%{smart_count} auto |||| %{smart_count} autos"
   },
-  "english": {
-    "de": "Englisch",
-    "en": "English"
-  },
   "english_lower": {
     "de": "englisch",
     "en": "english"
+  },
+  "english": {
+    "en": "English",
+    "de": "Englisch"
   },
   "english_capitalized": {
     "de": "%{t:english_lower | cap}",
@@ -34,5 +34,9 @@
   "languages": {
     "en": "%{t:english}, %{t:german}",
     "de": "%{t:english}, %{t:german}"
+  },
+  "nested": {
+    "en": "%{user.name.first}",
+    "de": "%{user.name.first}"
   }
 }

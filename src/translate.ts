@@ -5,6 +5,7 @@ import {
   TranslateLocal,
   Postprocess,
   Preprocess,
+  Interpolation,
 } from '.';
 
 const TOKEN_START = '%{';
@@ -54,7 +55,7 @@ export default function translate({
       : (convertMissingKey && convertMissingKey(key, trs)) || key;
   }
   function usingTranslations(trs: Translations) {
-    function tr(key: string, interpolation?: any) {
+    function tr(key: string, interpolation?: Interpolation) {
       if (preprocess) {
         const preprocessedKey = preprocess(key, trs);
         if (preprocessedKey) return '' + preprocessedKey;
@@ -103,7 +104,14 @@ export default function translate({
           );
         }
 
-        if (!replacement) replacement = interp[transformChain[0]];
+        if (!replacement) {
+          const nestedObjectPropertyPath = transformChain[0].split('.');
+          // fetch nested properties %{user.name} => interop[user][name]
+          replacement = nestedObjectPropertyPath.reduce((accum: any, next: string) => {
+            if (accum && accum.hasOwnProperty(next)) return accum[next];
+            return undefined;
+          }, interp);
+        }
 
         for (let i = 1; i < transformChain.length; i += 1) {
           const transform = transforms[transformChain[i]];
