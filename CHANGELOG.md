@@ -1,3 +1,7 @@
+# 6.0.0
+
+Adds stricter type checking of translation strings. If using the preprocess option you may need to now use as any or pass the generic `useTranslations<Translations>();` in order to pass type checks
+
 # 5.0.0
 
 - TypeScript rewrite (includes full typings)

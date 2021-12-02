@@ -49,7 +49,9 @@ function HooksComponent() {
         t('german'),
         t('selectLanguage'),
         t('languages'),
+        // @ts-expect-error missing key
         t('missing-key'),
+        // @ts-expect-error preprocess is not typed
         t('preprocessme'),
         t('nested', { user: { name: { first: 'David' } } }),
         t('nested', { user: 'Test' }),
@@ -80,12 +82,14 @@ function convertMissingKey(k: string) {
 
 for (const locale of testLocales) {
   const expectedToBeForLocale: string[] = expectedToBe[locale];
-  const output: string[] = (ReactTestRenderer.create(
-    <I18n.Provider
-      value={{ locale, transforms, preprocess, postprocess, convertMissingKey }}>
-      <HooksComponent />
-    </I18n.Provider>
-  ).toJSON() as any).map((node: any) => node.children[0]);
+  const output: string[] = (
+    ReactTestRenderer.create(
+      <I18n.Provider
+        value={{ locale, transforms, preprocess, postprocess, convertMissingKey }}>
+        <HooksComponent />
+      </I18n.Provider>
+    ).toJSON() as any
+  ).map((node: any) => node.children[0]);
 
   let failingTestsCount = 0;
   console.log(' ');

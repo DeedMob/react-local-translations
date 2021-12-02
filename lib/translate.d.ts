@@ -1,12 +1,10 @@
 import { Translations, ConvertMissingKey, Transforms, TranslateLocal, Postprocess, Preprocess } from '.';
-interface TranslateOptions {
+export default function translate<T extends Translations>({ locale, translations, globalTranslations, convertMissingKey, transforms, preprocess, postprocess, }: {
     locale: string;
-    translations: Translations;
+    translations: T;
     globalTranslations?: Translations;
     convertMissingKey?: ConvertMissingKey;
     transforms?: Transforms;
     preprocess?: Preprocess;
     postprocess?: Postprocess;
-}
-export default function translate({ locale, translations, globalTranslations, convertMissingKey, transforms, preprocess, postprocess, }: TranslateOptions): TranslateLocal;
-export {};
+}): TranslateLocal<T>;
