@@ -1,6 +1,5 @@
 import React from 'react';
-import { TranslateProps } from './';
-declare const hoc: <T extends Record<string, {
-    [language: string]: string;
-}>>(translations: T) => <Props extends object>(WrappedComponent: React.ComponentType<Props & TranslateProps>) => React.FunctionComponent<Props>;
+import { Translations, TranslateProps } from './';
+import { I18nContext } from './i18n';
+declare const hoc: <L extends string, T extends Translations<L>>(Context: React.Context<I18nContext<L>>, translations: T) => <Props extends object>(WrappedComponent: React.ComponentType<Props & TranslateProps<L, T>>) => React.FC<Props>;
 export default hoc;

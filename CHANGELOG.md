@@ -1,4 +1,16 @@
+# 7.0.0
+
+Breaking changes:
+
+- You have to create your own I18n Context now with
+  `const I18n = React.createContext<I18nContext<Locale>>({ locale: Locale.en });` and then pass the Context as the first argument of `useTranslations`, `useLocale` and `hoc`
+- Compilation target changed from es5 to es2017
+- Adds Locale type safety. Make sure you have tsconfig compilerOption `"resolveJsonModule": true` to get full benefits
+- Postprocess no longer supports a React.ReactNode return type
+
 # 6.0.0
+
+Breaking changes:
 
 Adds stricter type checking of translation strings. If using the preprocess option you may need to now use as any or pass the generic `useTranslations<Translations>();` in order to pass type checks
 

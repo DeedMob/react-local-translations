@@ -6,6 +6,7 @@ import {
   Postprocess,
   Preprocess,
   Interpolation,
+  TranslateType,
 } from '.';
 
 const TOKEN_START = '%{';
@@ -13,24 +14,26 @@ const COUNT_DELIMITER = '||||';
 const TRANSFORM_DELIMITER = ' | ';
 const TOKEN_REGEX = /\%\{(.*?)\}/g;
 
-function frenchPluralization(n: number) {
+function frenchPluralization(n: number): 1 | 0 {
   return n > 1 ? 1 : 0;
 }
-function germanPluralization(n: number) {
+function germanPluralization(n: number): 1 | 0 {
   return n !== 1 ? 1 : 0;
 }
 
-const localeToPluralization = {
+const localeToPluralization: Record<string, (n: number) => 1 | 0> = {
   en: germanPluralization,
   de: germanPluralization,
   nl: germanPluralization,
   es: germanPluralization,
   it: germanPluralization,
-
   fr: frenchPluralization,
 };
 
-export default function translate<T extends Translations>({
+export default function translate<
+  L extends string = string,
+  T extends Translations = Translations<L>
+>({
   locale,
   translations,
   globalTranslations = {},
@@ -39,20 +42,20 @@ export default function translate<T extends Translations>({
   preprocess,
   postprocess,
 }: {
-  locale: string;
+  locale: L;
   translations: T;
-  globalTranslations?: Translations;
+  globalTranslations?: Translations<L>;
   convertMissingKey?: ConvertMissingKey;
   transforms?: Transforms;
   preprocess?: Preprocess;
   postprocess?: Postprocess;
-}): TranslateLocal<T> {
-  function usePhrase(trs: Translations, key: string) {
+}): TranslateLocal<L, T> {
+  function usePhrase(trs: Translations<L>, key: string) {
     return trs.hasOwnProperty(key) && trs[key].hasOwnProperty(locale)
       ? trs[key][locale]
       : (convertMissingKey && convertMissingKey(key, trs)) || key;
   }
-  function usingTranslations(trs: Translations) {
+  function usingTranslations(trs: Translations<L>): TranslateType<L, T> {
     function tr(key: string & keyof T, interpolation?: Interpolation) {
       if (preprocess) {
         const preprocessedKey = preprocess(key, trs);
@@ -61,10 +64,9 @@ export default function translate<T extends Translations>({
 
       const phrase = usePhrase(trs, key);
 
-      // as any as string: to remove React.ReactNode from types
-      if (!phrase) return postprocess ? (postprocess('') as any as string) : '';
+      if (!phrase) return postprocess ? postprocess('') : '';
       if (!interpolation && interpolation !== 0 && phrase.indexOf(TOKEN_START) === -1)
-        return postprocess ? (postprocess(phrase) as any as string) : phrase;
+        return postprocess ? postprocess(phrase) : phrase;
 
       let result = phrase;
       const interp =
@@ -77,8 +79,8 @@ export default function translate<T extends Translations>({
         const part =
           parts.length === 1
             ? 0
-            : (locale in localeToPluralization
-                ? (localeToPluralization as any)[locale]
+            : (localeToPluralization.hasOwnProperty(locale)
+                ? localeToPluralization[locale as keyof typeof localeToPluralization]
                 : localeToPluralization.en)(interp.smart_count);
         result = parts[part > parts.length ? 0 : part].trim();
       }
@@ -130,8 +132,9 @@ export default function translate<T extends Translations>({
     return tr;
   }
 
-  // as any: needed because `tr.g` is defined after
-  const tr = usingTranslations(translations) as any;
-  tr.g = usingTranslations(globalTranslations);
+  const tr: TranslateLocal<L, T> = Object.assign(usingTranslations(translations), {
+    g: usingTranslations(globalTranslations),
+  });
+
   return tr;
 }

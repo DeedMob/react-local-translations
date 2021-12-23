@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
-import { useLocale, useTranslations, I18n } from '../src/index';
+import { useLocale, useTranslations, I18nContext } from '../src/index';
 import translations from './translations.json';
+import missingLanguage from './missing-language.json';
 
-const testLocales = ['en', 'de'];
-const expectedToBe: Record<typeof testLocales[number], string[]> = {
+enum Locale {
+  'en' = 'en',
+  'de' = 'de',
+}
+const I18n = React.createContext<I18nContext<Locale>>({ locale: Locale.en });
+
+const expectedToBe: Record<Locale, string[]> = {
   de: [
     'de',
     '{Hallo, Test}',
@@ -36,8 +42,10 @@ const expectedToBe: Record<typeof testLocales[number], string[]> = {
 };
 
 function HooksComponent() {
-  const locale = useLocale();
-  const t = useTranslations(translations);
+  const locale = useLocale(I18n);
+  const t = useTranslations(I18n, translations);
+  // This is a test for missing language; If this 'any' is not needed then types aren't working correctly
+  useTranslations<Locale>(I18n, missingLanguage as any);
   return (
     <>
       {[
@@ -49,10 +57,10 @@ function HooksComponent() {
         t('german'),
         t('selectLanguage'),
         t('languages'),
-        // @ts-expect-error missing key
-        t('missing-key'),
-        // @ts-expect-error preprocess is not typed
-        t('preprocessme'),
+        // This is a test for missing key; If this 'any' is not needed then types aren't working correctly
+        t('missing-key' as any),
+        // Preprocess is not typed
+        t('preprocessme' as any),
         t('nested', { user: { name: { first: 'David' } } }),
         t('nested', { user: 'Test' }),
       ].map((val, i) => (
@@ -80,7 +88,7 @@ function convertMissingKey(k: string) {
   return 'MissingKey: ' + k;
 }
 
-for (const locale of testLocales) {
+for (const [key, locale] of Object.entries(Locale)) {
   const expectedToBeForLocale: string[] = expectedToBe[locale];
   const output: string[] = (
     ReactTestRenderer.create(

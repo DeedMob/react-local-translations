@@ -1,0 +1,9 @@
+{
+  "greeting": {
+    "en": "Hello, %{name}.",
+    "de": "Hallo, %{name}"
+  },
+  "greeting_capitalized": {
+    "en": "Hello, %{name | cap}."
+  }
+}

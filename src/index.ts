@@ -1,12 +1,12 @@
-export { I18n } from './i18n';
+export { I18nContext } from './i18n';
 export { default as translate } from './hoc';
 export * from './hooks';
 export { default as tr } from './translate';
 
-export type Translations = Record<
+export type Translations<L extends string = string> = Record<
   string,
   {
-    [language: string]: string;
+    [language in L]: string;
   }
 >;
 
@@ -15,33 +15,43 @@ export type Preprocess = (
   key: string,
   translations: Translations
 ) => string | boolean | undefined | null | void;
-export type Postprocess = (phrase: string) => string | React.ReactNode;
+export type Postprocess = (phrase: string) => string;
 export interface Transforms {
   [name: string]: (value: any) => string;
 }
 
-export interface TranslateProps {
-  t: TranslateLocal;
-  g: TranslateGlobal;
-  getLocale(): string;
+export interface TranslateProps<
+  L extends string = string,
+  T extends Translations<L> = Translations<L>
+> {
+  t: TranslateLocal<L, T>;
+  g: TranslateGlobal<L, T>;
+  getLocale(): L;
 }
 
-export interface TranslateType<T extends Translations = Translations> {
-  (key: keyof T, interpolation?: Interpolation): string;
-  locale: string;
+export interface TranslateType<
+  L extends string = string,
+  T extends Translations<L> = Translations<L>
+> {
+  (key: keyof T & string, interpolation?: Interpolation): string;
+  locale: L;
   has(key: string): boolean;
 }
 
-export interface TranslateLocal<T extends Translations = Translations>
-  extends TranslateType<T> {
-  g: TranslateType<T>;
+export interface TranslateLocal<
+  L extends string = string,
+  T extends Translations<L> = Translations<L>
+> extends TranslateType<L, T> {
+  g: TranslateType<L, T>;
 }
 
-export type TranslateGlobal = TranslateType;
+export type TranslateGlobal<
+  L extends string = string,
+  T extends Translations<L> = Translations<L>
+> = TranslateType<L, T>;
 
-/** number sets smart_count behavior */
 export type Interpolation =
-  | {
-      [key: string]: string | number | object;
-    }
+  | ({ smart_count?: number } & {
+      [key: string]: string | object;
+    })
   | number;
