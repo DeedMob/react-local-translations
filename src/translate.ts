@@ -30,17 +30,7 @@ const localeToPluralization = {
   fr: frenchPluralization,
 };
 
-interface TranslateOptions {
-  locale: string;
-  translations: Translations;
-  globalTranslations?: Translations;
-  convertMissingKey?: ConvertMissingKey;
-  transforms?: Transforms;
-  preprocess?: Preprocess;
-  postprocess?: Postprocess;
-}
-
-export default function translate({
+export default function translate<T extends Translations>({
   locale,
   translations,
   globalTranslations = {},
@@ -48,14 +38,22 @@ export default function translate({
   transforms = {},
   preprocess,
   postprocess,
-}: TranslateOptions): TranslateLocal {
+}: {
+  locale: string;
+  translations: T;
+  globalTranslations?: Translations;
+  convertMissingKey?: ConvertMissingKey;
+  transforms?: Transforms;
+  preprocess?: Preprocess;
+  postprocess?: Postprocess;
+}): TranslateLocal<T> {
   function usePhrase(trs: Translations, key: string) {
     return trs.hasOwnProperty(key) && trs[key].hasOwnProperty(locale)
       ? trs[key][locale]
       : (convertMissingKey && convertMissingKey(key, trs)) || key;
   }
   function usingTranslations(trs: Translations) {
-    function tr(key: string, interpolation?: Interpolation) {
+    function tr(key: string & keyof T, interpolation?: Interpolation) {
       if (preprocess) {
         const preprocessedKey = preprocess(key, trs);
         if (preprocessedKey) return '' + preprocessedKey;
@@ -64,9 +62,9 @@ export default function translate({
       const phrase = usePhrase(trs, key);
 
       // as any as string: to remove React.ReactNode from types
-      if (!phrase) return postprocess ? ((postprocess('') as any) as string) : '';
+      if (!phrase) return postprocess ? (postprocess('') as any as string) : '';
       if (!interpolation && interpolation !== 0 && phrase.indexOf(TOKEN_START) === -1)
-        return postprocess ? ((postprocess(phrase) as any) as string) : phrase;
+        return postprocess ? (postprocess(phrase) as any as string) : phrase;
 
       let result = phrase;
       const interp =
@@ -133,7 +131,7 @@ export default function translate({
   }
 
   // as any: needed because `tr.g` is defined after
-  const tr: TranslateLocal = usingTranslations(translations) as any;
+  const tr = usingTranslations(translations) as any;
   tr.g = usingTranslations(globalTranslations);
   return tr;
 }
