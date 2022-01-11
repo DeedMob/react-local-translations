@@ -66,6 +66,7 @@ function HooksComponent() {
         locale,
         t('greeting', { name: 'Test' }),
         t('greeting_capitalized', { name: 'lowercase' }),
+        t('num_cars', { smart_count: 10 }),
         t('num_cars', 10),
         t('english_capitalized'),
         t('german'),

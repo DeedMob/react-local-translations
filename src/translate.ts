@@ -45,7 +45,7 @@ export default function translate<
 }: {
   locale: L;
   translations: T;
-  globalTranslations: TG;
+  globalTranslations?: TG;
   convertMissingKey?: ConvertMissingKey;
   transforms?: Transforms;
   preprocess?: Preprocess;
@@ -83,7 +83,7 @@ export default function translate<
             ? 0
             : (localeToPluralization.hasOwnProperty(locale)
                 ? localeToPluralization[locale as keyof typeof localeToPluralization]
-                : localeToPluralization.en)(interp.smart_count);
+                : localeToPluralization.en)(Number(interp.smart_count));
         result = parts[part > parts.length ? 0 : part].trim();
       }
       // %{var} -> interp["var"]
@@ -135,7 +135,7 @@ export default function translate<
   }
 
   const tr: TranslateLocal<L, T, TG> = Object.assign(usingTranslations<T>(translations), {
-    g: usingTranslations<TG>(globalTranslations),
+    g: usingTranslations<TG>((globalTranslations ?? {}) as any),
   });
 
   return tr;

@@ -53,7 +53,8 @@ export type TranslateGlobal<
 > = TranslateType<L, TG>;
 
 export type Interpolation =
-  | ({ smart_count?: number } & {
-      [key: string]: string | object;
-    })
+  | {
+      // 'smart_count' property must be a number if defined, but this is currently very hard to achieve in typescript due to index property restrictions
+      [key: string]: object | string | number;
+    }
   | number;

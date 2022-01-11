@@ -25,8 +25,6 @@ export interface TranslateLocal<L extends string = string, T extends Translation
     g: TranslateGlobal<L, TG>;
 }
 export declare type TranslateGlobal<L extends string = string, TG extends Translations<L> = Translations<L>> = TranslateType<L, TG>;
-export declare type Interpolation = ({
-    smart_count?: number;
-} & {
-    [key: string]: string | object;
-}) | number;
+export declare type Interpolation = {
+    [key: string]: object | string | number;
+} | number;
