@@ -1,3 +1,7 @@
+# 7.0.2
+
+Fix: smart_count property type
+
 # 7.0.1
 
 Fix: global translation types in 7.0.0 were wrong

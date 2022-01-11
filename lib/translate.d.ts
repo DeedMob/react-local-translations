@@ -2,7 +2,7 @@ import { Translations, ConvertMissingKey, Transforms, TranslateLocal, Postproces
 export default function translate<L extends string = string, T extends Translations = Translations<L>, TG extends Translations = Translations<L>>({ locale, translations, globalTranslations, convertMissingKey, transforms, preprocess, postprocess, }: {
     locale: L;
     translations: T;
-    globalTranslations: TG;
+    globalTranslations?: TG;
     convertMissingKey?: ConvertMissingKey;
     transforms?: Transforms;
     preprocess?: Preprocess;

@@ -52,8 +52,10 @@ export type TranslateGlobal<
   TG extends Translations<L> = Translations<L>
 > = TranslateType<L, TG>;
 
+/** A number behaves as a shorthand the smart_count value */
 export type Interpolation =
-  | ({ smart_count?: number } & {
-      [key: string]: string | object;
-    })
+  | {
+      smart_count?: number;
+      [key: string]: string | number | object | undefined;
+    }
   | number;
