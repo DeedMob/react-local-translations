@@ -11,9 +11,9 @@ export declare type Postprocess = (phrase: string) => string;
 export interface Transforms {
     [name: string]: (value: any) => string;
 }
-export interface TranslateProps<L extends string = string, T extends Translations<L> = Translations<L>> {
+export interface TranslateProps<L extends string = string, T extends Translations<L> = Translations<L>, TG extends Translations<L> = Translations<L>> {
     t: TranslateLocal<L, T>;
-    g: TranslateGlobal<L, T>;
+    g: TranslateGlobal<L, TG>;
     getLocale(): L;
 }
 export interface TranslateType<L extends string = string, T extends Translations<L> = Translations<L>> {
@@ -21,10 +21,10 @@ export interface TranslateType<L extends string = string, T extends Translations
     locale: L;
     has(key: string): boolean;
 }
-export interface TranslateLocal<L extends string = string, T extends Translations<L> = Translations<L>> extends TranslateType<L, T> {
-    g: TranslateType<L, T>;
+export interface TranslateLocal<L extends string = string, T extends Translations<L> = Translations<L>, TG extends Translations<L> = Translations<L>> extends TranslateType<L, T> {
+    g: TranslateGlobal<L, TG>;
 }
-export declare type TranslateGlobal<L extends string = string, T extends Translations<L> = Translations<L>> = TranslateType<L, T>;
+export declare type TranslateGlobal<L extends string = string, TG extends Translations<L> = Translations<L>> = TranslateType<L, TG>;
 export declare type Interpolation = ({
     smart_count?: number;
 } & {

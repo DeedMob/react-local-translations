@@ -32,11 +32,12 @@ const localeToPluralization: Record<string, (n: number) => 1 | 0> = {
 
 export default function translate<
   L extends string = string,
-  T extends Translations = Translations<L>
+  T extends Translations = Translations<L>,
+  TG extends Translations = Translations<L>
 >({
   locale,
   translations,
-  globalTranslations = {},
+  globalTranslations,
   convertMissingKey,
   transforms = {},
   preprocess,
@@ -44,19 +45,20 @@ export default function translate<
 }: {
   locale: L;
   translations: T;
-  globalTranslations?: Translations<L>;
+  globalTranslations: TG;
   convertMissingKey?: ConvertMissingKey;
   transforms?: Transforms;
   preprocess?: Preprocess;
   postprocess?: Postprocess;
-}): TranslateLocal<L, T> {
-  function usePhrase(trs: Translations<L>, key: string) {
+}): TranslateLocal<L, T, TG> {
+  function usePhrase(trs: Translations<L>, key: string): string {
     return trs.hasOwnProperty(key) && trs[key].hasOwnProperty(locale)
       ? trs[key][locale]
       : (convertMissingKey && convertMissingKey(key, trs)) || key;
   }
-  function usingTranslations(trs: Translations<L>): TranslateType<L, T> {
-    function tr(key: string & keyof T, interpolation?: Interpolation) {
+
+  function usingTranslations<TX extends Translations<L>>(trs: TX): TranslateType<L, TX> {
+    function tr(key: string & keyof TX, interpolation?: Interpolation): string {
       if (preprocess) {
         const preprocessedKey = preprocess(key, trs);
         if (preprocessedKey) return '' + preprocessedKey;
@@ -99,7 +101,7 @@ export default function translate<
           expr[1] === ':'
         ) {
           replacement = usePhrase(
-            inlineTranslationType === 't' ? translations : globalTranslations,
+            inlineTranslationType === 't' ? translations : globalTranslations ?? {},
             transformChain[0].substr(2)
           );
         }
@@ -132,8 +134,8 @@ export default function translate<
     return tr;
   }
 
-  const tr: TranslateLocal<L, T> = Object.assign(usingTranslations(translations), {
-    g: usingTranslations(globalTranslations),
+  const tr: TranslateLocal<L, T, TG> = Object.assign(usingTranslations<T>(translations), {
+    g: usingTranslations<TG>(globalTranslations),
   });
 
   return tr;

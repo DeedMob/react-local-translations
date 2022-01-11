@@ -2,9 +2,12 @@ import React from 'react';
 import { Translations, ConvertMissingKey, Postprocess, Transforms, Preprocess } from './';
 
 /** Create your own Context with Locale type by importing I18nContext React.createContext<I18nContext<Locale>>({ locale: 'en' }); */
-export interface I18nContext<L extends string = string> {
+export interface I18nContext<
+  L extends string = string,
+  TG extends Translations<L> = Translations<L>
+> {
   locale: L;
-  globalTranslations?: Translations<L>;
+  globalTranslations: TG;
   convertMissingKey?: ConvertMissingKey;
   /**
    * Transforms are pure functions that map %{key} phrases to something else.
