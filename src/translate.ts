@@ -83,7 +83,7 @@ export default function translate<
             ? 0
             : (localeToPluralization.hasOwnProperty(locale)
                 ? localeToPluralization[locale as keyof typeof localeToPluralization]
-                : localeToPluralization.en)(Number(interp.smart_count));
+                : localeToPluralization.en)(interp.smart_count);
         result = parts[part > parts.length ? 0 : part].trim();
       }
       // %{var} -> interp["var"]

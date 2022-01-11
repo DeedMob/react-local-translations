@@ -52,9 +52,10 @@ export type TranslateGlobal<
   TG extends Translations<L> = Translations<L>
 > = TranslateType<L, TG>;
 
+/** A number behaves as a shorthand the smart_count value */
 export type Interpolation =
   | {
-      // 'smart_count' property must be a number if defined, but this is currently very hard to achieve in typescript due to index property restrictions
-      [key: string]: object | string | number;
+      smart_count?: number;
+      [key: string]: string | number | object | undefined;
     }
   | number;
