@@ -19,7 +19,7 @@ export interface TranslateProps<L extends string = string, T extends Translation
 export interface TranslateType<L extends string = string, T extends Translations<L> = Translations<L>> {
     (key: keyof T & string, interpolation?: Interpolation): string;
     locale: L;
-    has(key: string): boolean;
+    has(key: string | number | symbol): key is keyof T;
 }
 export interface TranslateLocal<L extends string = string, T extends Translations<L> = Translations<L>, TG extends Translations<L> = Translations<L>> extends TranslateType<L, T> {
     g: TranslateGlobal<L, TG>;

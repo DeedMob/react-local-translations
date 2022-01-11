@@ -36,7 +36,7 @@ export interface TranslateType<
 > {
   (key: keyof T & string, interpolation?: Interpolation): string;
   locale: L;
-  has(key: string): boolean;
+  has(key: string | number | symbol): key is keyof T;
 }
 
 export interface TranslateLocal<
