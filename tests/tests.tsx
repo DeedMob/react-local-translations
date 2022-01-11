@@ -3,12 +3,16 @@ import ReactTestRenderer from 'react-test-renderer';
 import { useLocale, useTranslations, I18nContext } from '../src/index';
 import translations from './translations.json';
 import missingLanguage from './missing-language.json';
+import globalTranslations from './global-translations.json';
 
 enum Locale {
   'en' = 'en',
   'de' = 'de',
 }
-const I18n = React.createContext<I18nContext<Locale>>({ locale: Locale.en });
+const I18n = React.createContext<I18nContext<Locale, typeof globalTranslations>>({
+  locale: Locale.en,
+  globalTranslations,
+});
 
 const expectedToBe: Record<Locale, string[]> = {
   de: [
@@ -24,6 +28,9 @@ const expectedToBe: Record<Locale, string[]> = {
     '{.preprocess.}',
     '{David}',
     '{undefined}',
+    '{MissingKey: missing-key}',
+    '{Global}',
+    '{MissingKey: english_lower}',
   ],
   en: [
     'en',
@@ -38,14 +45,21 @@ const expectedToBe: Record<Locale, string[]> = {
     '{.preprocess.}',
     '{David}',
     '{undefined}',
+    '{MissingKey: missing-key}',
+    '{Global}',
+    '{MissingKey: english_lower}',
   ],
 };
 
 function HooksComponent() {
   const locale = useLocale(I18n);
   const t = useTranslations(I18n, translations);
-  // This is a test for missing language; If this 'any' is not needed then types aren't working correctly
-  useTranslations<Locale>(I18n, missingLanguage as any);
+  useTranslations(
+    I18n,
+    // This is a test for missing language; If this 'ts-expect-error' is not needed then types aren't working correctly
+    // @ts-expect-error
+    missingLanguage
+  );
   return (
     <>
       {[
@@ -57,12 +71,22 @@ function HooksComponent() {
         t('german'),
         t('selectLanguage'),
         t('languages'),
-        // This is a test for missing key; If this 'any' is not needed then types aren't working correctly
-        t('missing-key' as any),
-        // Preprocess is not typed
-        t('preprocessme' as any),
+        // This is a test for missing key; If this 'ts-expect-error' is not needed then types aren't working correctly
+        // @ts-expect-error
+        t('missing-key'),
+        // This is a test for preprocess function arguments not being typed; If this 'ts-expect-error' is not needed then types aren't working correctly
+        // @ts-expect-error
+        t('preprocessme'),
         t('nested', { user: { name: { first: 'David' } } }),
         t('nested', { user: 'Test' }),
+        // This is a test for missing key in global; If this 'ts-expect-error' is not needed then types aren't working correctly
+        // @ts-expect-error
+        t.g('missing-key'),
+        // This is a test for global types
+        t.g('global'),
+        // This is a test for global type not falsely accepting keys from the local translation file
+        // @ts-expect-error
+        t.g('english_lower'),
       ].map((val, i) => (
         <span key={`${val}-${i}`}>{val}</span>
       ))}
@@ -93,7 +117,14 @@ for (const [key, locale] of Object.entries(Locale)) {
   const output: string[] = (
     ReactTestRenderer.create(
       <I18n.Provider
-        value={{ locale, transforms, preprocess, postprocess, convertMissingKey }}>
+        value={{
+          globalTranslations,
+          locale,
+          transforms,
+          preprocess,
+          postprocess,
+          convertMissingKey,
+        }}>
         <HooksComponent />
       </I18n.Provider>
     ).toJSON() as any

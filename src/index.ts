@@ -22,10 +22,11 @@ export interface Transforms {
 
 export interface TranslateProps<
   L extends string = string,
-  T extends Translations<L> = Translations<L>
+  T extends Translations<L> = Translations<L>,
+  TG extends Translations<L> = Translations<L>
 > {
   t: TranslateLocal<L, T>;
-  g: TranslateGlobal<L, T>;
+  g: TranslateGlobal<L, TG>;
   getLocale(): L;
 }
 
@@ -40,15 +41,16 @@ export interface TranslateType<
 
 export interface TranslateLocal<
   L extends string = string,
-  T extends Translations<L> = Translations<L>
+  T extends Translations<L> = Translations<L>,
+  TG extends Translations<L> = Translations<L>
 > extends TranslateType<L, T> {
-  g: TranslateType<L, T>;
+  g: TranslateGlobal<L, TG>;
 }
 
 export type TranslateGlobal<
   L extends string = string,
-  T extends Translations<L> = Translations<L>
-> = TranslateType<L, T>;
+  TG extends Translations<L> = Translations<L>
+> = TranslateType<L, TG>;
 
 export type Interpolation =
   | ({ smart_count?: number } & {

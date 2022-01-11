@@ -1,3 +1,9 @@
+# 7.0.1
+
+Fix: global translation types in 7.0.0 were wrong
+
+- Adds tests for global translation types
+
 # 7.0.0
 
 Breaking changes:
