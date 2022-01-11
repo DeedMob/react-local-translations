@@ -53,15 +53,26 @@ const expectedToBe: Record<Locale, string[]> = {
   ],
 };
 
+const testForHas = 'x' as string;
+
 function HooksComponent() {
   const locale = useLocale(I18n);
   const t = useTranslations(I18n, translations);
+
+  /** Tests that don't require logging outputs */
   useTranslations(
     I18n,
     // This is a test for missing language; If this 'ts-expect-error' is not needed then types aren't working correctly
     // @ts-expect-error
     missingLanguage
   );
+  // Test that 'has' type guard is working. This should not have a type error
+  t.has(testForHas) ? t(testForHas) : '';
+  // This is a test for 'has' type guard; If this 'ts-expect-error' is not needed then types aren't working correctly
+  // @ts-expect-error
+  t.has(testForHas) ? '' : t(testForHas);
+
+  /** Tests that check render outputs */
   return (
     <>
       {[

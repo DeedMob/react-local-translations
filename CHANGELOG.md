@@ -1,3 +1,7 @@
+# 7.0.3
+
+Feat: Type guard for `.has` function
+
 # 7.0.2
 
 Fix: smart_count property type

@@ -130,7 +130,7 @@ export default function translate<
     }
 
     tr.locale = locale;
-    tr.has = (key: string) => trs.hasOwnProperty(key);
+    tr.has = (key: string | number | symbol): key is keyof TX => trs.hasOwnProperty(key);
     return tr;
   }
 
