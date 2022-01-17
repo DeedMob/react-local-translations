@@ -135,7 +135,7 @@ export default function translate<
   }
 
   const tr: TranslateLocal<L, T, TG> = Object.assign(usingTranslations<T>(translations), {
-    g: usingTranslations<TG>((globalTranslations ?? {}) as any),
+    g: usingTranslations<TG>((globalTranslations ?? {}) as TG),
   });
 
   return tr;

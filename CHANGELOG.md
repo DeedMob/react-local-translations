@@ -1,3 +1,8 @@
+# 7.1.0
+
+Fix: global types of HOC function.
+Breaking change: Removes TranslateGlobal type in favour of identical TranslateType
+
 # 7.0.3
 
 Feat: Type guard for `.has` function
