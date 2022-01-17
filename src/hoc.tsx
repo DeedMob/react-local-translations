@@ -23,9 +23,6 @@ const hoc =
         };
       }, [ctx]); // translations is always constant
 
-      i18nProps.g.has;
-      WrappedComponent.propTypes?.g;
-
       return <WrappedComponent {...props} {...i18nProps} />;
     };
 
