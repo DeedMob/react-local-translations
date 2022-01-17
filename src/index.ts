@@ -25,8 +25,8 @@ export interface TranslateProps<
   T extends Translations<L> = Translations<L>,
   TG extends Translations<L> = Translations<L>
 > {
-  t: TranslateLocal<L, T>;
-  g: TranslateGlobal<L, TG>;
+  t: TranslateLocal<L, T, TG>;
+  g: TranslateType<L, TG>;
   getLocale(): L;
 }
 
@@ -44,13 +44,8 @@ export interface TranslateLocal<
   T extends Translations<L> = Translations<L>,
   TG extends Translations<L> = Translations<L>
 > extends TranslateType<L, T> {
-  g: TranslateGlobal<L, TG>;
+  g: TranslateType<L, TG>;
 }
-
-export type TranslateGlobal<
-  L extends string = string,
-  TG extends Translations<L> = Translations<L>
-> = TranslateType<L, TG>;
 
 /** A number behaves as a shorthand the smart_count value */
 export type Interpolation =

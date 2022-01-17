@@ -12,8 +12,8 @@ export interface Transforms {
     [name: string]: (value: any) => string;
 }
 export interface TranslateProps<L extends string = string, T extends Translations<L> = Translations<L>, TG extends Translations<L> = Translations<L>> {
-    t: TranslateLocal<L, T>;
-    g: TranslateGlobal<L, TG>;
+    t: TranslateLocal<L, T, TG>;
+    g: TranslateType<L, TG>;
     getLocale(): L;
 }
 export interface TranslateType<L extends string = string, T extends Translations<L> = Translations<L>> {
@@ -22,9 +22,8 @@ export interface TranslateType<L extends string = string, T extends Translations
     has(key: string | number | symbol): key is keyof T;
 }
 export interface TranslateLocal<L extends string = string, T extends Translations<L> = Translations<L>, TG extends Translations<L> = Translations<L>> extends TranslateType<L, T> {
-    g: TranslateGlobal<L, TG>;
+    g: TranslateType<L, TG>;
 }
-export declare type TranslateGlobal<L extends string = string, TG extends Translations<L> = Translations<L>> = TranslateType<L, TG>;
 export declare type Interpolation = {
     smart_count?: number;
     [key: string]: string | number | object | undefined;

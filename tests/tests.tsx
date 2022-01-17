@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
-import { useLocale, useTranslations, I18nContext } from '../src/index';
+import { useLocale, useTranslations, I18nContext, translate } from '../src/index';
 import translations from './translations.json';
 import missingLanguage from './missing-language.json';
 import globalTranslations from './global-translations.json';
