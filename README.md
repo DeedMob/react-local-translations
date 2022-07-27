@@ -4,7 +4,7 @@ Define both global, app-wide translations, and local, per-component translations
 
 Based on [polyglot.js](https://airbnb.io/polyglot.js), with a few additions we found sorely lacking while whitelabeling.
 
-```
+```sh
 npm i react-local-translations
 ```
 
@@ -23,3 +23,13 @@ Translate using t (return type of useTranslations, or this.props.t from translat
 `t('key')`, `t.g('global_key')`, `t.locale`, `t.has(`\${thing}\_help`) ? t(`\${thing}\_help`) : ''`
 
 We recommend putting translation files in `.json`, but anything goes. Dynamic stuff is recommended to be in global translations. `convertMissingKey` and `transforms` are able to supply additional dynamic stuff.
+
+## Releasing updates
+
+Once you've merged in your changes, **bump the version appropriately**.
+
+Then build & release with:
+```sh
+npm run build
+npm publish
+```
