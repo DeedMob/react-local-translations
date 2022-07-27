@@ -52,7 +52,7 @@ export default function translate<
   postprocess?: Postprocess;
 }): TranslateLocal<L, T, TG> {
   function usePhrase(trs: Translations<L>, key: string): string {
-    return trs.hasOwnProperty(key) && trs[key].hasOwnProperty(locale)
+    return trs[key]?.[locale]
       ? trs[key][locale]
       : (convertMissingKey && convertMissingKey(key, trs)) || key;
   }
@@ -130,7 +130,7 @@ export default function translate<
     }
 
     tr.locale = locale;
-    tr.has = (key: string | number | symbol): key is keyof TX => trs.hasOwnProperty(key);
+    tr.has = (key: string | number | symbol): key is keyof TX => !!trs[key.toString()];
     return tr;
   }
 
